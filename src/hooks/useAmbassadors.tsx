@@ -30,12 +30,10 @@ import {
 } from "../utils/helpers";
 import { getToday } from "../utils/dateManager";
 
-import winstonImage from "../assets/winston.png";
-
 // These schema should match the type exposed by the API
 const apiAmbassadorSchema = ambassadorSchema.extend({
   image: ambassadorImageSchema.extend({
-    src: z.string().url(),
+    src: z.url(),
   }),
   species: speciesSchema.extend({
     key: z.string(),
@@ -174,58 +172,6 @@ export const AmbassadorsProvider = ({
   return <Context value={ambassadors}>{children}</Context>;
 };
 
-const winston = {
-  name: "Winston",
-  alternate: [],
-  commands: ["winston"],
-  species: {
-    key: "polarBear",
-    name: "Polar Bear",
-    scientificName: "Twitchus memeticus",
-    iucn: {
-      id: null,
-      assessment: null,
-      title: getIUCNStatus("NE"),
-      status: "NE",
-    },
-    native: {
-      text: "Twitch chat (including the Animals, Aquariums, & Zoos category), miscellaneous emote services",
-      source:
-        "https://clips.twitch.tv/TangibleFurryTortoiseBCWarrior-izyQ3nOgq1pYe1rc", // https://clips.twitch.tv/CleverSecretiveAntChocolateRain--zjm5eRw6zxG75Up
-    },
-    lifespan: {
-      source: "",
-    },
-    birth: "live",
-    class: {
-      key: "mammalia",
-      title: getClassification("mammalia"),
-    },
-  },
-  sex: "Male",
-  birth: "2020-04-01",
-  arrival: "2022-12-01",
-  retired: null,
-  enclosure: {
-    key: "ice",
-    title: "Ice Pool",
-  },
-  story:
-    "Winston was rescued by the Ontario Zoo in Canada after it was noticed that he was watching streams too often and not touching grass. Originally on loan to Alveus for two years, he is now a permanent resident of Texas.",
-  mission:
-    "He is an ambassador for stream-life balance and encouraging all chatters to step away from their devices more often.",
-  clips: [],
-  homepage: null,
-  plush: null,
-  image: {
-    src: winstonImage,
-    alt: "Winston the polar bear",
-    position: "50% 25%",
-  },
-} as const satisfies Ambassador;
-
-const isWinstonDate = (date: string) => date === "04-01";
-
 export const useAmbassadors = (): Record<string, Ambassador> | null => {
   const ambassadors = useContext(Context);
 
@@ -244,7 +190,6 @@ export const useAmbassadors = (): Record<string, Ambassador> | null => {
       ambassadors
         ? {
             ...ambassadors,
-            ...(isWinstonDate(date) ? { winston } : {}),
           }
         : null,
     [ambassadors, date],

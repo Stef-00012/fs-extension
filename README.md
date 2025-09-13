@@ -1,6 +1,6 @@
-# The Alveus Twitch Extension
+# The Ferret Software Twitch Extension
 
-Twitch extension for [Alveus Sanctuary](https://www.alveussanctuary.org), allowing stream viewers to learn more about the ambassadors at the sanctuary.
+Twitch extension for [Ferret Software](https://ferrets.live), allowing stream viewers to learn more about the ferrets at the sanctuary. A modified version of the [Alveus Sanctuary Twitch Extension](https://github.com/alveusgg/extension).
 
 ## Demo
 

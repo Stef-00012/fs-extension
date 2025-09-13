@@ -2,13 +2,11 @@ import { useMemo } from "react";
 
 import IconGlobe from "./icons/IconGlobe";
 import IconAmazon from "./icons/IconAmazon";
-import IconInstagram from "./icons/IconInstagram";
-import IconTikTok from "./icons/IconTikTok";
+import IconShopping from "./icons/IconShopping";
+import IconTwitch from "./icons/IconTwitch";
+import IconBook from "./icons/IconBook";
+import IconDiscord from "./icons/IconDiscord";
 import IconTwitter from "./icons/IconTwitter";
-import IconBluesky from "./icons/IconBluesky";
-import IconFacebook from "./icons/IconFacebook";
-import IconPlay from "./icons/IconPlay";
-import IconGitHub from "./icons/IconGitHub";
 
 import useChannel from "../hooks/useChannel";
 
@@ -26,23 +24,24 @@ export default function Welcome(props: WelcomeProps) {
 
   const channel = useChannel();
   const nonDefault = useMemo(
-    () => !channel || channel.toLowerCase() !== "alveussanctuary",
+    () => !channel || channel.toLowerCase() !== "ferretsoftware",
     [channel],
   );
 
   return (
-    <Card className={className} title="Welcome to Alveus">
+    <Card className={className} title="Welcome to Snails House">
       <p className="mt-2 mb-4">
-        Alveus Sanctuary is a 501(c)(3) non-profit organization that functions
-        as a wildlife sanctuary and as a virtual education center. These
-        non-releasable animals are educational ambassadors so viewers can learn
-        from and build a connection to them.
+        Snails House is a ferret rescue based out of Washington State that cares
+        for animals brought in from all over the United States. We specifically
+        seek out animals that have dire medical needs, are victims of abuse or
+        neglect, or cannot otherwise be taken care of by their owners. We do not
+        adopt animals out and do not accept donations of any kind.
       </p>
 
       <ul className="mb-2 flex flex-wrap items-center justify-center gap-4">
         <li className={socialClass}>
           <a
-            href="https://www.alveussanctuary.org"
+            href="https://ferrets.live"
             rel="noreferrer"
             target="_blank"
             title="Website"
@@ -52,7 +51,17 @@ export default function Welcome(props: WelcomeProps) {
         </li>
         <li className={socialClass}>
           <a
-            href="https://www.alveussanctuary.org/wishlist"
+            href="https://discord.gg/piratesoftware"
+            rel="noreferrer"
+            target="_blank"
+            title="Discord"
+          >
+            <IconDiscord size={32} />
+          </a>
+        </li>
+        <li className={socialClass}>
+          <a
+            href="https://www.amazon.com/hz/wishlist/ls/XPF1IXTBF72H"
             rel="noreferrer"
             target="_blank"
             title="Amazon Wishlist"
@@ -62,69 +71,49 @@ export default function Welcome(props: WelcomeProps) {
         </li>
         <li className={socialClass}>
           <a
-            href="https://www.alveussanctuary.org/instagram"
+            href="https://throne.com/piratesoftware"
             rel="noreferrer"
             target="_blank"
-            title="Instagram"
+            title="Throne Wishlist"
           >
-            <IconInstagram size={32} />
+            <IconShopping size={32} />
           </a>
         </li>
         <li className={socialClass}>
           <a
-            href="https://www.alveussanctuary.org/tiktok"
+            href="https://ferrets.piratesoftware.wiki"
             rel="noreferrer"
             target="_blank"
-            title="TikTok"
+            title="Ferret Wiki"
           >
-            <IconTikTok size={32} />
+            <IconBook size={32} />
           </a>
         </li>
         <li className={socialClass}>
           <a
-            href="https://www.alveussanctuary.org/twitter"
+            href="https://x.com/rivermakes"
             rel="noreferrer"
             target="_blank"
-            title="X (Twitter)"
+            title="Shaye's Twitter"
           >
             <IconTwitter size={32} />
-          </a>
-        </li>
-        <li className={socialClass}>
-          <a
-            href="https://www.alveussanctuary.org/bluesky"
-            rel="noreferrer"
-            target="_blank"
-            title="Bluesky"
-          >
-            <IconBluesky size={32} />
-          </a>
-        </li>
-        <li className={socialClass}>
-          <a
-            href="https://www.alveussanctuary.org/facebook"
-            rel="noreferrer"
-            target="_blank"
-            title="Facebook"
-          >
-            <IconFacebook size={32} />
           </a>
         </li>
         {nonDefault && (
           <li className={socialClass}>
             <a
-              href="https://www.alveussanctuary.org/live"
+              href="https://twitch.tv/ferretsoftware"
               rel="noreferrer"
               target="_blank"
               title="Live"
             >
-              <IconPlay size={32} />
+              <IconTwitch size={32} />
             </a>
           </li>
         )}
       </ul>
 
-      <a
+      {/* <a
         className="flex w-fit items-center justify-center gap-1 text-xs transition-colors hover:text-highlight focus:text-highlight"
         href="https://github.com/alveusgg/extension"
         rel="noreferrer"
@@ -132,7 +121,7 @@ export default function Welcome(props: WelcomeProps) {
       >
         Contribute on GitHub
         <IconGitHub size={16} />
-      </a>
+      </a> */}
     </Card>
   );
 }
