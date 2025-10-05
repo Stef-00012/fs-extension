@@ -12,3 +12,6 @@ export const camelToKebab = (str: string) =>
 
 export const camelToSnake = (str: string) =>
   str.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
+
+export const spaceToSnake = (str: string) =>
+  str.replace(/ /g, "_").toLowerCase();

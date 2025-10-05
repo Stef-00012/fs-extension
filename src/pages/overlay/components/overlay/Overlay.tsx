@@ -11,7 +11,7 @@ import {
 
 import Welcome from "../../../../components/Welcome";
 import IconWelcome from "../../../../components/icons/IconWelcome";
-import IconAmbassadors from "../../../../components/icons/IconAmbassadors";
+import IconFerrets from "../../../../components/icons/IconFerrets";
 import IconSettings from "../../../../components/icons/IconSettings";
 
 import { useFerrets } from "../../../../hooks/useFerrets";
@@ -52,8 +52,8 @@ const overlayOptions = [
   {
     key: "ferrets",
     type: "primary",
-    icon: IconAmbassadors,
-    title: "Explore our Ferrets",
+    icon: IconFerrets,
+    title: "Meet the Ferrets",
     component: AmbassadorsOverlay,
     condition: ({ ferrets }) => Object.values(ferrets ?? {}).some(() => true),
   },

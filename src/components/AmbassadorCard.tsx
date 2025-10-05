@@ -9,7 +9,7 @@ import {
   isBirthday,
 } from "../utils/dateManager";
 import { useFerret } from "../hooks/useFerrets";
-import { camelToSnake } from "../utils/helpers";
+import { spaceToSnake } from "../utils/helpers";
 import { classes } from "../utils/classes";
 
 import IconBack from "./icons/IconBack";
@@ -20,8 +20,10 @@ import Ring from "./Ring";
 import moderatorBadge from "../assets/mod.svg";
 import partyHat from "../assets/party.svg";
 import playgroups from "@pirate-software/fs-data/build/playgroups";
+import IconInfo from "./icons/IconInfo";
+import Tooltip from "./Tooltip";
 
-const headingClass = "text-base text-alveus-green-400";
+const headingClass = "text-base text-fs-tan-600";
 const rowClass = "flex flex-wrap gap-x-6 gap-y-1 [&>*]:mr-auto";
 
 export interface AmbassadorCardProps {
@@ -130,7 +132,7 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
       {birthday && <Confetti onInit={confettiInit} />}
       <div
         className={classes(
-          "relative flex max-h-full min-h-[min(28rem,100%)] w-80 max-w-full flex-col justify-start rounded-lg bg-alveus-green-900 align-top text-xs shadow-xl",
+          "relative flex max-h-full min-h-[min(28rem,100%)] w-80 max-w-full flex-col justify-start rounded-lg bg-fs-tan align-top text-xs shadow-xl",
           className,
         )}
         ref={callbackRef}
@@ -153,7 +155,7 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
           loading="lazy"
         />
 
-        <div className="relative flex w-full items-center justify-center bg-alveus-green px-8 py-1">
+        <div className="relative flex w-full items-center justify-center bg-fs-tan-300 px-8 py-1">
           {onClose && (
             <button
               className="absolute left-0 p-1 transition-colors hover:text-highlight active:text-highlight sm:hidden"
@@ -165,9 +167,11 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
             </button>
           )}
 
-          <h2 className="text-base text-balance text-white">{ferret.name}</h2>
+          <h2 className="text-base text-balance text-fs-black">
+            {ferret.name}
+          </h2>
         </div>
-        <div className="mb-2 scrollbar-thin flex flex-auto flex-col gap-1 overflow-y-auto p-2 scrollbar-thumb-alveus-green scrollbar-track-alveus-green-900">
+        <div className="mb-2 scrollbar-thin flex flex-auto flex-col gap-1 overflow-y-auto p-2 scrollbar-thumb-fs-tan scrollbar-track-fs-tan-900">
           {mod && (
             <div className="flex items-center gap-2">
               <img
@@ -182,12 +186,14 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
             </div>
           )}
 
-          <div>
-            <h3 className={headingClass}>AKA</h3>
-            <p>
-              <i>{ferret.aliases.join(", ")}</i>
-            </p>
-          </div>
+          {ferret.aliases && ferret.aliases.length > 0 && (
+            <div>
+              <h3 className={headingClass}>AKA</h3>
+              <p>
+                <i>{ferret.aliases.join(", ")}</i>
+              </p>
+            </div>
+          )}
 
           <div className={rowClass}>
             <div>
@@ -231,7 +237,15 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
           <div className={rowClass}>
             <div>
               <h3 className={headingClass}>Playgroup</h3>
-              <p>{playgroups[ferret.playgroup].name}</p>
+              <Tooltip text={playgroups[ferret.playgroup].description}>
+                <div className="inline-flex">
+                  {playgroups[ferret.playgroup].name}&nbsp;
+                  <IconInfo
+                    size={15}
+                    className="rounded-full outline-highlight transition-[outline] hover:outline-3"
+                  />
+                </div>
+              </Tooltip>
             </div>
             <div>
               <h3 className={headingClass}>Arrived</h3>
@@ -245,12 +259,12 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
             <p>
               Learn more about {ferret.name} on the{" "}
               <a
-                href={`https://ferrets.piratesoftware.wiki/wiki/${camelToSnake(
-                  ambassadorKey,
+                href={`https://ferrets.piratesoftware.wiki/wiki/${spaceToSnake(
+                  ferret.name,
                 )}`}
                 rel="noreferrer"
                 target="_blank"
-                className="text-nowrap text-alveus-green-200 transition-colors hover:text-highlight focus:text-highlight"
+                className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
               >
                 <span className="underline">Ferret Software Wiki</span>{" "}
                 <IconExternal className="mb-0.5 inline-block" size={12} />

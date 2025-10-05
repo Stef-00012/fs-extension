@@ -7,6 +7,7 @@ import Card from "../../../../components/Card";
 import Toggle from "../Toggle";
 
 import type { OverlayOptionProps } from "./Overlay";
+import IconExternal from "../../../../components/icons/IconExternal";
 
 export default function Settings(props: OverlayOptionProps) {
   const { className } = props;
@@ -34,17 +35,87 @@ export default function Settings(props: OverlayOptionProps) {
         </ul>
       </Card>
       <Card title="Credits" className={classes("top-3", className)}>
-        Based on the work of the alveus.gg team
-        <br />
-        Modified for Ferret Software by Matt
-        <br />
-        Social media logo icons from fontawesome.com
-        <br />
-        Party hat icon from flaticon.com
-        <br />
-        Other icons from heroicons.com
-        <br />
-        Other images subject to copyright
+        <div className="mt-3">
+          Based on the work of the&nbsp;
+          <a
+            href="https://alveusgg.com"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">alveus.gg</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          &nbsp;team
+          <br />
+          Modified for&nbsp;
+          <a
+            href="https://ferrets.live"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">Ferret Software</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          &nbsp;by&nbsp;
+          <a
+            href="https://mattermatter.dev"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">Matt</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          <br />
+          Social media logo icons from&nbsp;
+          <a
+            href="https://fontawesome.com"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">fontawesome.com</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          <br />
+          Party hat icon from&nbsp;
+          <a
+            href="https://flaticon.com"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">flaticon.com</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          <br />
+          Other icons from&nbsp;
+          <a
+            href="https://heroicons.com"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">heroicons.com</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+          <br />
+          Emotes and other images subject to copyright
+          <br />
+          For all enquiries, please open a{" "}
+          <span className="italic">#mod-ticket</span> on&nbsp;
+          <a
+            href="https://discord.gg/piratesoftware"
+            rel="noreferrer"
+            target="_blank"
+            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+          >
+            <span className="underline">Discord</span>
+            <IconExternal className="mb-0.5 inline-block" size={12} />
+          </a>
+        </div>
       </Card>
     </div>
   );
