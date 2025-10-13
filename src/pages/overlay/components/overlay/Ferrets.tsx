@@ -7,8 +7,8 @@ import {
 } from "react";
 import { Transition } from "@headlessui/react";
 
-import AmbassadorCard from "../../../../components/AmbassadorCard";
-import FerretButton from "../../../../components/AmbassadorButton";
+import FerretCard from "../../../../components/FerretCard";
+import FerretButton from "../../../../components/FerrretButton";
 
 import { useFerrets as useFerrets } from "../../../../hooks/useFerrets";
 import { classes } from "../../../../utils/classes";
@@ -27,49 +27,45 @@ const arrowPathClass =
   "[&_path]:stroke-fs-pink [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
 const hiddenClass = "opacity-0 pointer-events-none";
 
-type AmbassadorsProps = OverlayOptionProps;
+type FerretsProps = OverlayOptionProps;
 
-export default function Ambassadors(props: AmbassadorsProps) {
+export default function Ferrets(props: FerretsProps) {
   const {
-    context: { activeAmbassador, setActiveAmbassador },
+    context: { activeFerret: activeFerret, setActiveFerret: setActiveFerret },
     className,
   } = props;
 
-  const rawAmbassadors = useFerrets();
-  const ambassadors = useMemo(
+  const rawFerrets = useFerrets();
+  const ferrets = useMemo(
     () =>
-      typeSafeObjectEntries(rawAmbassadors ?? {}).sort(([, a], [, b]) =>
+      typeSafeObjectEntries(rawFerrets ?? {}).sort(([, a], [, b]) =>
         sortPartialDates(a.arrival, b.arrival),
       ),
-    [rawAmbassadors],
+    [rawFerrets],
   );
 
   const upArrowRef = useRef<HTMLButtonElement>(null);
   const ferretList = useRef<HTMLDivElement>(null);
   const downArrowRef = useRef<HTMLButtonElement>(null);
 
-  // Scroll the ambassador list to the selected ambassador
+  // Scroll the ferrets list to the selected ferret
   useEffect(() => {
-    if (
-      !ferretList.current ||
-      !activeAmbassador.key ||
-      !activeAmbassador.isCommand
-    )
+    if (!ferretList.current || !activeFerret.key || !activeFerret.isCommand)
       return;
 
     const offset = 200;
     const anchorElement = ferretList.current.querySelector(
-      `#${activeAmbassador.key}`,
+      `#${activeFerret.key}`,
     );
     if (anchorElement instanceof HTMLButtonElement)
       ferretList.current.scrollTo({
         top: Math.max(0, anchorElement.offsetTop - offset),
         behavior: "smooth",
       });
-  }, [activeAmbassador]);
+  }, [activeFerret]);
 
   // Allow the list to be scrolled via the buttons
-  const ambassadorListScroll = useCallback(
+  const ferretListScroll = useCallback(
     (event: MouseEvent, direction: number) => {
       if (ferretList.current) {
         event.stopPropagation();
@@ -110,14 +106,14 @@ export default function Ambassadors(props: AmbassadorsProps) {
   }, []);
 
   // Check the arrow visibility on mount, as browsers restore odd scroll positions
-  // Also, check it whenever the ambassador list changes as the list may change size
+  // Also, check it whenever the ferret list changes as the list may change size
   useEffect(() => {
     handleArrowVisibility();
 
     // If the window is resized, check the arrow visibility again
     window.addEventListener("resize", handleArrowVisibility);
     return () => window.removeEventListener("resize", handleArrowVisibility);
-  }, [handleArrowVisibility, ambassadors]);
+  }, [handleArrowVisibility, ferrets]);
 
   return (
     <div
@@ -132,17 +128,15 @@ export default function Ambassadors(props: AmbassadorsProps) {
           className="list-fade -my-[var(--twitch-vertical-padding)] scrollbar-none flex w-40 flex-col items-center gap-4 overflow-scroll px-4 py-[calc(var(--twitch-vertical-padding)+var(--list-fade-padding))]"
           onScroll={handleArrowVisibility}
         >
-          {ambassadors.map(([key]) => (
+          {ferrets.map(([key]) => (
             <FerretButton
               key={key}
               ferret={key}
               onClick={() => {
-                setActiveAmbassador((prev) =>
-                  prev.key === key ? {} : { key },
-                );
+                setActiveFerret((prev) => (prev.key === key ? {} : { key }));
               }}
               className="w-full"
-              active={activeAmbassador.key === key}
+              active={activeFerret.key === key}
             />
           ))}
         </div>
@@ -154,7 +148,7 @@ export default function Ambassadors(props: AmbassadorsProps) {
             "-top-[var(--twitch-vertical-padding)]",
             hiddenClass,
           )}
-          onClick={(e) => ambassadorListScroll(e, 250)}
+          onClick={(e) => ferretListScroll(e, 250)}
           title="Scroll up"
           type="button"
           data-transparent-clicks
@@ -168,7 +162,7 @@ export default function Ambassadors(props: AmbassadorsProps) {
             arrowClass,
             "-bottom-[var(--twitch-vertical-padding)] rotate-180",
           )}
-          onClick={(e) => ambassadorListScroll(e, -250)}
+          onClick={(e) => ferretListScroll(e, -250)}
           title="Scroll down"
           type="button"
           data-transparent-clicks
@@ -177,12 +171,12 @@ export default function Ambassadors(props: AmbassadorsProps) {
         </button>
       </div>
 
-      {ambassadors.map(([key]) => (
-        <Transition show={activeAmbassador.key === key} key={key}>
-          <AmbassadorCard
+      {ferrets.sort().map(([key]) => (
+        <Transition show={activeFerret.key === key} key={key}>
+          <FerretCard
             key={key}
-            ambassador={key}
-            onClose={() => setActiveAmbassador({})}
+            ferret={key}
+            onClose={() => setActiveFerret({})}
             className="z-0 col-start-2 row-start-1 origin-[center_left] self-center transition-[opacity,transform,translate] will-change-[opacity,transform,translate] data-[closed]:-translate-x-10 data-[closed]:opacity-0 data-[closed]:motion-reduce:translate-x-0"
           />
         </Transition>

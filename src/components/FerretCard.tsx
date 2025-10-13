@@ -9,7 +9,6 @@ import {
   isBirthday,
 } from "../utils/dateManager";
 import { useFerret } from "../hooks/useFerrets";
-import { spaceToSnake } from "../utils/helpers";
 import { classes } from "../utils/classes";
 
 import IconBack from "./icons/IconBack";
@@ -26,22 +25,16 @@ import Tooltip from "./Tooltip";
 const headingClass = "text-base text-fs-tan-600";
 const rowClass = "flex flex-wrap gap-x-6 gap-y-1 [&>*]:mr-auto";
 
-export interface AmbassadorCardProps {
-  ambassador: string;
+export interface FerretCardProps {
+  ferret: string;
   onClose?: () => void;
   className?: string;
   ref?: Ref<HTMLDivElement>;
 }
 
-export default function AmbassadorCard(props: AmbassadorCardProps) {
-  const {
-    ambassador: ambassadorKey,
-    onClose,
-    className,
-    ref,
-    ...extras
-  } = props;
-  const ferret = useFerret(ambassadorKey);
+export default function FerretCard(props: FerretCardProps) {
+  const { ferret: ferretKey, onClose, className, ref, ...extras } = props;
+  const ferret = useFerret(ferretKey);
 
   const mod =
     window?.Twitch?.ext?.viewer?.role === "broadcaster" ||
@@ -259,9 +252,7 @@ export default function AmbassadorCard(props: AmbassadorCardProps) {
             <p>
               Learn more about {ferret.name} on the{" "}
               <a
-                href={`https://ferrets.piratesoftware.wiki/wiki/${spaceToSnake(
-                  ferret.name,
-                )}`}
+                href={`https://ferrets.piratesoftware.wiki/wiki/${ferret.wikipage}`}
                 rel="noreferrer"
                 target="_blank"
                 className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"

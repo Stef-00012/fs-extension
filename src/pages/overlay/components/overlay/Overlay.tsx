@@ -23,7 +23,7 @@ import useChatCommand from "../../../../hooks/useChatCommand";
 import useSettings from "../../hooks/useSettings";
 import useSleeping from "../../hooks/useSleeping";
 
-import AmbassadorsOverlay from "./Ferrets";
+import FerretssOverlay from "./Ferrets";
 import SettingsOverlay from "./Settings";
 
 import Buttons, { type ButtonsOption } from "../Buttons";
@@ -54,7 +54,7 @@ const overlayOptions = [
     type: "primary",
     icon: IconFerrets,
     title: "Meet the Ferrets",
-    component: AmbassadorsOverlay,
+    component: FerretssOverlay,
     condition: ({ ferrets }) => Object.values(ferrets ?? {}).some(() => true),
   },
   {
@@ -71,15 +71,15 @@ export const isValidOverlayKey = (key: string) =>
 
 export type OverlayKey = (typeof overlayOptions)[number]["key"] | "";
 
-type ActiveAmbassadorState = {
+type ActiveFerretState = {
   key?: string;
   isCommand?: boolean;
 };
 
 export interface OverlayOptionProps {
   context: {
-    activeAmbassador: ActiveAmbassadorState;
-    setActiveAmbassador: Dispatch<SetStateAction<ActiveAmbassadorState>>;
+    activeFerret: ActiveFerretState;
+    setActiveFerret: Dispatch<SetStateAction<ActiveFerretState>>;
   };
   className?: string;
 }
@@ -106,8 +106,7 @@ export default function Overlay() {
     [ferrets],
   );
 
-  const [activeAmbassador, setActiveAmbassador] =
-    useState<ActiveAmbassadorState>({});
+  const [activeFerret, setActiveFerret] = useState<ActiveFerretState>({});
   const [visibleOption, setVisibleOption] = useState<OverlayKey>(
     settings.openedMenu.value,
   );
@@ -130,7 +129,7 @@ export default function Overlay() {
       (command: string) => {
         if (!settings.disableChatPopup.value) {
           const ferret = ferrets?.[command];
-          if (ferret) setActiveAmbassador({ key: command, isCommand: true });
+          if (ferret) setActiveFerret({ key: command, isCommand: true });
           else if (command !== "welcome") return;
 
           // Show the card
@@ -140,7 +139,7 @@ export default function Overlay() {
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
           timeoutRef.current = setTimeout(() => {
             setVisibleOption("");
-            setActiveAmbassador({});
+            setActiveFerret({});
           }, commandTimeout);
 
           // Track that we're waking up, so that we don't immediately clear the timeout, and wake the overlay
@@ -203,10 +202,10 @@ export default function Overlay() {
   // Generate the context for the overlay options
   const context = useMemo<OverlayOptionProps["context"]>(
     () => ({
-      activeAmbassador,
-      setActiveAmbassador,
+      activeFerret: activeFerret,
+      setActiveFerret: setActiveFerret,
     }),
-    [activeAmbassador],
+    [activeFerret],
   );
 
   return (

@@ -201,7 +201,7 @@ const config: webpack.Configuration = {
           filename: (pathData) => {
             if (!pathData.filename) return "";
             const dir = basename(dirname(pathData.filename));
-            return `static/media/ambassadors/${dir}/[name].[contenthash][ext]`;
+            return `static/media/ferrets/${dir}/[name].[contenthash][ext]`;
           },
         } as webpack.WebpackOptionsNormalized["module"]["generator"]["asset"],
         use: [

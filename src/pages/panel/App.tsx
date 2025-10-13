@@ -1,14 +1,14 @@
 import { FerretsProvider } from "../../hooks/useFerrets";
 
 import Nav from "./components/Nav";
-import Ambassadors from "./components/Ambassadors";
+import Ferrets from "./components/Ferrets";
 
 function App() {
   return (
     <FerretsProvider>
       <div className="relative h-full w-full">
         <Nav />
-        <Ambassadors />
+        <Ferrets />
       </div>
     </FerretsProvider>
   );

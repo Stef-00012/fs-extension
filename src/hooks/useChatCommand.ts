@@ -45,19 +45,19 @@ export default function useChatCommand(callback: (command: string) => void) {
     [channel],
   );
 
-  const ambassadors = useFerrets();
+  const ferrets = useFerrets();
   const commandsMap = useMemo(() => {
     const commands = new Map<string, string>();
-    if (ambassadors) {
-      typeSafeObjectEntries(ambassadors).forEach(([key, ambassador]) => {
-        ambassador.commands.forEach((command) => {
+    if (ferrets) {
+      typeSafeObjectEntries(ferrets).forEach(([key, ferret]) => {
+        ferret.commands.forEach((command) => {
           commands.set(command.toLowerCase(), key);
         });
       });
     }
     commands.set("welcome", "welcome");
     return commands;
-  }, [ambassadors]);
+  }, [ferrets]);
 
   const messageHandler = useCallback(
     (
