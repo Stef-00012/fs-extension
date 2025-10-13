@@ -1,6 +1,6 @@
 {
   "name": "@pirate-software/fs-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
-    "@pirate-software/fs-data": "^0.4.1",
+    "@pirate-software/fs-data": "^0.4.3",
     "luxon": "^3.7.2",
     "react": "^19.2.0",
     "react-canvas-confetti": "^2.0.7",

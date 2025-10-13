@@ -1,6 +1,6 @@
 # The Ferret Software Twitch Extension
 
-Twitch extension for [Ferret Software](https://ferrets.live), allowing stream viewers to learn more about the ferrets at the sanctuary. A modified version of the [Alveus Sanctuary Twitch Extension](https://github.com/alveusgg/extension).
+Twitch extension for [Ferret Software](https://ferrets.live), allowing stream viewers to learn more about the ferrets at the sanctuary. Derived from the [Alveus Sanctuary Twitch Extension](https://github.com/alveusgg/extension).
 
 ## Demo
 

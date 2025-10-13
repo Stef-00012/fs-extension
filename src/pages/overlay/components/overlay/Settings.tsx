@@ -38,7 +38,7 @@ export default function Settings(props: OverlayOptionProps) {
         <div className="mt-3">
           Based on the work of the&nbsp;
           <a
-            href="https://alveusgg.com"
+            href="https://alveus.gg"
             rel="noreferrer"
             target="_blank"
             className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
@@ -69,7 +69,7 @@ export default function Settings(props: OverlayOptionProps) {
             <IconExternal className="mb-0.5 inline-block" size={12} />
           </a>
           <br />
-          Social media logo icons from&nbsp;
+          Brand logo icons from&nbsp;
           <a
             href="https://fontawesome.com"
             rel="noreferrer"
@@ -91,7 +91,7 @@ export default function Settings(props: OverlayOptionProps) {
             <IconExternal className="mb-0.5 inline-block" size={12} />
           </a>
           <br />
-          Other icons from&nbsp;
+          Other single-colour icons from&nbsp;
           <a
             href="https://heroicons.com"
             rel="noreferrer"

@@ -89,8 +89,8 @@ export default function useChatCommand(callback: (command: string) => void) {
   );
 
   useEffect(() => {
-    const id = Date.now();
-    console.log("*Twitch extension is connecting to chat*", id);
+    const timestamp = Date.now();
+    console.log("*Twitch extension is connecting to chat*", timestamp);
 
     // Create the client
     const client = new tmi.Client({
@@ -102,7 +102,7 @@ export default function useChatCommand(callback: (command: string) => void) {
     });
 
     // Handle incoming messages
-    client.on("message", (...args) => messageHandler(id, ...args));
+    client.on("message", (...args) => messageHandler(timestamp, ...args));
 
     // Handle race condition where we connect after being unmounted
     let closing = false;
@@ -113,8 +113,8 @@ export default function useChatCommand(callback: (command: string) => void) {
           .disconnect()
           .then(() =>
             console.log(
-              "*Twitch extension disconnected from chat (after connecting)*",
-              id,
+              `*Twitch extension disconnected from chat (after connecting): ${channelNames.join(", ")}*`,
+              timestamp,
             ),
           );
         return;
@@ -122,7 +122,7 @@ export default function useChatCommand(callback: (command: string) => void) {
 
       console.log(
         `*Twitch extension is connected to chat: ${channelNames.join(", ")}*`,
-        id,
+        timestamp,
       );
     });
 
@@ -135,7 +135,7 @@ export default function useChatCommand(callback: (command: string) => void) {
       client
         .disconnect()
         .then(() =>
-          console.log("*Twitch extension disconnected from chat*", id),
+          console.log("*Twitch extension disconnected from chat*", timestamp),
         );
     };
   }, [channelNames, messageHandler]);
