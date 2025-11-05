@@ -37,7 +37,10 @@ export const SleepingProvider = ({ children }: { children: ReactNode }) => {
     sleep: [],
   });
   const on = useCallback<Sleeping["on"]>((event, fn) => {
-    setCallbacks((prev) => ({ ...prev, [event]: [...prev[event], fn] }));
+    setCallbacks((prev) => ({
+      ...prev,
+      [event]: [...prev[event], fn],
+    }));
   }, []);
   const off = useCallback<Sleeping["off"]>((event, fn) => {
     setCallbacks((prev) => ({

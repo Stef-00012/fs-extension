@@ -9,8 +9,9 @@ import useSleeping from "./hooks/useSleeping";
 
 import Overlay from "./components/overlay/Overlay";
 
-// Hide the overlay after 5s of inactivity
-const timeout = 5_000;
+// Hide the overlay after X ms of inactivity
+const defaultTimeout = 5_000; // when not hovering a card
+const cardHoverTimeout = 15_000; // when hovering a card
 
 export default function App() {
   // Show/hide the overlay based on mouse movement
@@ -24,7 +25,22 @@ export default function App() {
   } = useSleeping();
 
   // When the user interacts, show the overlay
-  const interacted = useCallback(() => wake(timeout), [wake]);
+  const interacted = useCallback(
+    (
+      event:
+        | React.MouseEvent
+        | React.WheelEvent
+        | React.TouchEvent
+        | React.KeyboardEvent,
+    ) => {
+      const isCardHovered = !!(
+        event.target instanceof Element &&
+        event.target.closest('[data-ferret-card="true"]')
+      );
+      wake(isCardHovered ? cardHoverTimeout : defaultTimeout);
+    },
+    [wake],
+  );
 
   // Hide the cursor when the user is idle
   const [, showCursor] = useHiddenCursor();
@@ -48,11 +64,11 @@ export default function App() {
             ? "opacity-0 [&_*]:pointer-events-none"
             : "opacity-100",
         )}
-        onMouseEnter={interacted}
-        onMouseMove={interacted}
-        onWheel={interacted}
-        onTouchMove={interacted}
-        onKeyDown={interacted}
+        onMouseEnter={(e) => interacted(e)}
+        onMouseMove={(e) => interacted(e)}
+        onWheel={(e) => interacted(e)}
+        onTouchMove={(e) => interacted(e)}
+        onKeyDown={(e) => interacted(e)}
         onMouseLeave={sleep}
       >
         <Overlay />

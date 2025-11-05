@@ -129,6 +129,7 @@ export default function FerretCard(props: FerretCardProps) {
           className,
         )}
         ref={callbackRef}
+        data-ferret-card="true"
         {...extras}
       >
         {birthday && (
