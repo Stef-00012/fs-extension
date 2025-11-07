@@ -69,6 +69,8 @@ export default function Settings(props: OverlayOptionProps) {
             <IconExternal className="mb-0.5 inline-block" size={12} />
           </a>
           <br />
+          Ferret data gathered by the Pirate Software Wikis Community
+          <hr className="my-4 border-fs-tan-700/50" />
           Brand logo icons from&nbsp;
           <a
             href="https://fontawesome.com"
@@ -103,7 +105,7 @@ export default function Settings(props: OverlayOptionProps) {
           </a>
           <br />
           Emotes and other images subject to copyright
-          <br />
+          <hr className="my-4 border-fs-tan-700/50" />
           For all enquiries, please open a{" "}
           <span className="italic">#mod-ticket</span> on&nbsp;
           <a

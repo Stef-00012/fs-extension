@@ -234,13 +234,26 @@ export default function FerretCard(props: FerretCardProps) {
             <div>
               <h3 className={headingClass}>Playgroup</h3>
               <Tooltip text={playgroups[ferret.playgroup].description}>
-                <div className="inline-flex">
-                  {playgroups[ferret.playgroup].name}&nbsp;
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.dispatchEvent(
+                      new CustomEvent("fsext:selectPlaygroup", {
+                        detail: ferret.playgroup,
+                      }),
+                    );
+                  }}
+                  className="inline-flex items-center gap-1 text-left text-fs-tan-700 no-underline transition-colors hover:text-highlight hover:underline focus:text-highlight"
+                  aria-label={`Filter by ${playgroups[ferret.playgroup].name}`}
+                >
+                  {playgroups[ferret.playgroup].name}
                   <IconInfo
                     size={15}
                     className="rounded-full outline-highlight transition-[outline] hover:outline-3"
                   />
-                </div>
+                </a>
+                &nbsp;
               </Tooltip>
             </div>
             <div>

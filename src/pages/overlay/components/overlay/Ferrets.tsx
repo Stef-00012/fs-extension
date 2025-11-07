@@ -22,7 +22,7 @@ import type { OverlayOptionProps } from "./Overlay";
 import IconChevron from "../../../../components/icons/IconChevron";
 
 const arrowClass =
-  "absolute border-0 cursor-pointer text-fs-tan-900 w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] pb-4 box-content";
+  "absolute border-0 cursor-pointer text-fs-tan-900 w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] box-content";
 const arrowSvgClass =
   "mx-auto drop-shadow-lg overflow-visible transition-transform group-hover:scale-125 group-focus:scale-125";
 const arrowPathClass =
@@ -54,22 +54,23 @@ export default function Ferrets(props: FerretsProps) {
   const upArrowRef = useRef<HTMLButtonElement>(null);
   const ferretList = useRef<HTMLDivElement>(null);
   const downArrowRef = useRef<HTMLButtonElement>(null);
+  const playgroupSelector = useRef<HTMLDivElement>(null);
 
   // Scroll the ferrets list to the selected ferret
   useEffect(() => {
-    if (!ferretList.current || !activeFerret.key || !activeFerret.isCommand)
-      return;
+    if (!ferretList.current || !activeFerret.key) return;
 
     const offset = 200;
     const anchorElement = ferretList.current.querySelector(
       `#${activeFerret.key}`,
     );
-    if (anchorElement instanceof HTMLButtonElement)
+    if (anchorElement instanceof HTMLElement) {
       ferretList.current.scrollTo({
         top: Math.max(0, anchorElement.offsetTop - offset),
         behavior: "smooth",
       });
-  }, [activeFerret]);
+    }
+  }, [activeFerret.key]);
 
   // Allow the list to be scrolled via the buttons
   const ferretListScroll = useCallback(
@@ -93,8 +94,12 @@ export default function Ferrets(props: FerretsProps) {
     if (!list) return;
 
     const listRect = list.getBoundingClientRect();
-    const firstRect = list.firstElementChild?.getBoundingClientRect();
-    const lastRect = list.lastElementChild?.getBoundingClientRect();
+    const children = Array.from(list.children).filter(
+      (el) => el !== playgroupSelector.current,
+    );
+    if (!children || children.length === 0) return;
+    const firstRect = children[0]?.getBoundingClientRect();
+    const lastRect = children[children.length - 1]?.getBoundingClientRect();
     if (!firstRect || !lastRect) return;
 
     // If more than 50% of the first element is hidden, show the up arrow
@@ -122,6 +127,65 @@ export default function Ferrets(props: FerretsProps) {
     return () => window.removeEventListener("resize", handleArrowVisibility);
   }, [handleArrowVisibility, ferrets]);
 
+  // When changing playgroup, trigger event (used by FerretCard)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail;
+      if (detail) setSelectedPlaygroup(detail);
+    };
+
+    window.addEventListener("fsext:selectPlaygroup", handler as EventListener);
+    return () =>
+      window.removeEventListener(
+        "fsext:selectPlaygroup",
+        handler as EventListener,
+      );
+  }, []);
+
+  // When ferret/playgroup changes, scroll to selected ferret
+  useEffect(() => {
+    const list = ferretList.current;
+    if (!list) return;
+
+    const offset = 200;
+
+    const scrollToAnchor = (anchorId?: string) => {
+      if (anchorId) {
+        const anchorElement = list.querySelector(`#${anchorId}`);
+        if (anchorElement instanceof HTMLElement) {
+          list.scrollTo({
+            top: Math.max(0, anchorElement.offsetTop - offset),
+            behavior: "auto",
+          });
+          return;
+        }
+      } else {
+        // Scroll to top
+        list.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    };
+
+    // If ferret in selected playgroup, scroll to it
+    if (activeFerret.key) {
+      const found = ferrets.find(([key]) => key === activeFerret.key);
+      if (
+        found &&
+        (selectedPlaygroup === "all" ||
+          found[1]?.playgroup === selectedPlaygroup)
+      ) {
+        scrollToAnchor(activeFerret.key);
+      } else {
+        scrollToAnchor();
+      }
+    } else {
+      scrollToAnchor();
+    }
+
+    // Trigger arrow buttons update
+    const t = window.setTimeout(() => handleArrowVisibility(), 200);
+    return () => window.clearTimeout(t);
+  }, [selectedPlaygroup, ferrets, handleArrowVisibility]);
+
   return (
     <div
       className={classes(
@@ -133,13 +197,22 @@ export default function Ferrets(props: FerretsProps) {
         <div
           ref={ferretList}
           className="list-fade -my-[var(--twitch-vertical-padding)] scrollbar-none flex w-40 flex-col items-center gap-4 overflow-scroll px-4 py-[calc(var(--twitch-vertical-padding)+var(--list-fade-padding))]"
-          onScroll={handleArrowVisibility}
+          onScroll={(e) => {
+            handleArrowVisibility();
+            // Update shadow based on scroll position
+            const select = e.currentTarget.querySelector("select");
+            select?.setAttribute(
+              "data-at-top",
+              e.currentTarget.scrollTop === 0 ? "true" : "false",
+            );
+          }}
         >
-          <div className="w-full">
+          <div ref={playgroupSelector} className="sticky top-0 z-30 w-full">
             <select
-              className="mx-auto block w-full rounded-lg bg-fs-tan px-2 py-1 text-sm text-fs-black shadow-lg"
+              className="transition-ring mx-auto block w-full rounded-lg bg-fs-tan px-2 py-1 text-sm text-fs-black shadow-lg ring-inset data-[at-top=false]:ring-2"
               value={selectedPlaygroup}
               onChange={(e) => setSelectedPlaygroup(e.target.value)}
+              data-at-top="true"
             >
               <option value="all">All Playgroups</option>
               {Object.entries(playgroups)

@@ -11,8 +11,8 @@ export default function Ring({ active = false, className }: RingProps) {
       className={classes(
         "pointer-events-none absolute inset-0 ring-3 transition-shadow ring-inset",
         active
-          ? "ring-highlight"
-          : "ring-white/25 group-hover/button:ring-highlight group-focus/button:ring-highlight",
+          ? "ring-highlight-dark"
+          : "ring-white/25 group-hover/button:ring-highlight-dark group-focus/button:ring-highlight-dark",
         !/\brounded-/.test(className || "") && "rounded-lg",
         className,
       )}
