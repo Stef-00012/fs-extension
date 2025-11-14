@@ -9,10 +9,10 @@ export default function Ring({ active = false, className }: RingProps) {
   return (
     <div
       className={classes(
-        "pointer-events-none absolute inset-0 ring-3 transition-shadow ring-inset",
+        "pointer-events-none absolute inset-0 border-3 border-b-5 border-outlinecol transition-colors",
         active
-          ? "ring-highlight-dark"
-          : "ring-white/25 group-hover/button:ring-highlight-dark group-focus/button:ring-highlight-dark",
+          ? "border-outlinecol"
+          : "border-white/25 group-hover/button:border-outlinecol group-focus/button:border-outlinecol",
         !/\brounded-/.test(className || "") && "rounded-lg",
         className,
       )}

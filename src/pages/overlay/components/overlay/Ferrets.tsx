@@ -22,11 +22,11 @@ import type { OverlayOptionProps } from "./Overlay";
 import IconChevron from "../../../../components/icons/IconChevron";
 
 const arrowClass =
-  "absolute border-0 cursor-pointer text-fs-tan-900 w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] box-content";
+  "absolute border-0 cursor-pointer text-chocolate-deep w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] box-content";
 const arrowSvgClass =
   "mx-auto drop-shadow-lg overflow-visible transition-transform group-hover:scale-125 group-focus:scale-125";
 const arrowPathClass =
-  "[&_path]:stroke-fs-pink [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
+  "[&_path]:stroke-tan [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
 const hiddenClass = "opacity-0 pointer-events-none";
 
 type FerretsProps = OverlayOptionProps;
@@ -142,6 +142,21 @@ export default function Ferrets(props: FerretsProps) {
       );
   }, []);
 
+  // Switch ferret (used by FerretCard)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail;
+      if (detail) setActiveFerret({ key: detail });
+    };
+
+    window.addEventListener("fsext:selectFerret", handler as EventListener);
+    return () =>
+      window.removeEventListener(
+        "fsext:selectFerret",
+        handler as EventListener,
+      );
+  }, [setActiveFerret]);
+
   // When ferret/playgroup changes, scroll to selected ferret
   useEffect(() => {
     const list = ferretList.current;
@@ -209,13 +224,13 @@ export default function Ferrets(props: FerretsProps) {
         >
           <div ref={playgroupSelector} className="sticky top-0 z-30 w-full">
             <select
-              className="transition-ring mx-auto block w-full rounded-lg bg-fs-tan px-2 py-1 text-sm text-fs-black shadow-lg ring-inset data-[at-top=false]:ring-2"
+              className="transition-ring text-text mx-auto block w-full rounded-lg bg-tan px-2 py-1 text-sm shadow-lg ring-inset data-[at-top=false]:ring-2"
               value={selectedPlaygroup}
               onChange={(e) => setSelectedPlaygroup(e.target.value)}
               data-at-top="true"
             >
               <option value="all">All Playgroups</option>
-              {Object.entries(playgroups)
+              {(Object.entries(playgroups) as [string, { name: string }][])
                 .filter(([, group]) => group.name !== playgroups.valhalla.name)
                 .sort(([, a], [, b]) => {
                   const prioGroups = new Set<string>([

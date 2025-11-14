@@ -41,7 +41,7 @@ export default function Settings(props: OverlayOptionProps) {
             href="https://alveus.gg"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">alveus.gg</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
@@ -53,7 +53,7 @@ export default function Settings(props: OverlayOptionProps) {
             href="https://ferrets.live"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">Ferret Software</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
@@ -63,20 +63,20 @@ export default function Settings(props: OverlayOptionProps) {
             href="https://mattermatter.dev"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">Matt</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
           </a>
           <br />
           Ferret data gathered by the Pirate Software Wikis Community
-          <hr className="my-4 border-fs-tan-700/50" />
+          <hr className="my-4 border-chocolate" />
           Brand logo icons from&nbsp;
           <a
             href="https://fontawesome.com"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">fontawesome.com</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
@@ -87,7 +87,7 @@ export default function Settings(props: OverlayOptionProps) {
             href="https://flaticon.com"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">flaticon.com</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
@@ -98,21 +98,21 @@ export default function Settings(props: OverlayOptionProps) {
             href="https://heroicons.com"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">heroicons.com</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
           </a>
           <br />
           Emotes and other images subject to copyright
-          <hr className="my-4 border-fs-tan-700/50" />
+          <hr className="my-4 border-chocolate" />
           For all enquiries, please open a{" "}
           <span className="italic">#mod-ticket</span> on&nbsp;
           <a
             href="https://discord.gg/piratesoftware"
             rel="noreferrer"
             target="_blank"
-            className="text-nowrap text-fs-tan-700 transition-colors hover:text-highlight focus:text-highlight"
+            className="text-nowrap text-chocolate-deep transition-colors hover:text-highlight focus:text-highlight"
           >
             <span className="underline">Discord</span>
             <IconExternal className="mb-0.5 inline-block" size={12} />
