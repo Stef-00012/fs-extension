@@ -9,7 +9,7 @@ import type { CreateTypes } from "canvas-confetti";
 import Confetti from "react-canvas-confetti";
 
 import {
-  // calculateAge,
+  calculateAge,
   formatDate,
   formatBirthday,
   isBirthday,
@@ -50,7 +50,7 @@ export default function FerretCard(props: FerretCardProps) {
   const birthday = ferret
     ? isBirthday(ferret.birth || null, ferret.birthday || null)
     : false;
-  // const age = ferret?.birth ? calculateAge(ferret.birth) : "Unknown";
+  const age = ferret?.birth ? calculateAge(ferret.birth) : "Unknown";
   const birth =
     ferret?.birth?.split("-").length === 3
       ? formatDate(ferret.birth)
@@ -258,7 +258,7 @@ export default function FerretCard(props: FerretCardProps) {
               <h3 className={headingClass}>Sex</h3>
               <p>{ferret.sex || "Unknown"}</p>
             </div>
-            {/* <div> //TODO: births aren't in data currently since they're not stored nicely on the wiki
+            <div>
               <h3 className={headingClass}>Age</h3>
               <p>
                 {age[0] === "~" && (
@@ -268,7 +268,7 @@ export default function FerretCard(props: FerretCardProps) {
                 )}
                 {age.slice(age[0] === "~" ? 1 : 0)}
               </p>
-            </div> */}
+            </div>
             <div>
               <h3 className={headingClass}>Birthday</h3>
               <p>
