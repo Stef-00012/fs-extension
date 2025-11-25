@@ -111,6 +111,7 @@ export const FerretsProvider = ({
   // On mount, attempt to fetch the ferrets from the API
   // If we can't fetch the ferrets, use the data from the data package
   useEffect(() => {
+    // setFerrets(fallbackFerrets);
     fetchFerrets()
       .catch((err) => {
         console.error(err);

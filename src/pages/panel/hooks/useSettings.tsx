@@ -12,32 +12,8 @@ import {
   typeSafeObjectEntries,
   typeSafeObjectFromEntries,
 } from "../../../utils/helpers";
-import {
-  isValidOverlayKey,
-  type OverlayKey,
-} from "../components/overlay/Overlay";
 
 const settings = {
-  disableChatPopup: {
-    title: "Prevent Mod-triggered Card Popups",
-    type: "boolean",
-    process: (value: any) => !!value,
-    configurable: true,
-  },
-  disableOverlayHiding: {
-    title: "(DEV) Prevent app hiding automatically",
-    type: "boolean",
-    process: (value: any) => !!value,
-    configurable: process.env.NODE_ENV === "development",
-  },
-  openedMenu: {
-    title: "Menu that was last opened",
-    type: "string",
-    process: (value: any): OverlayKey => {
-      return isValidOverlayKey(value) ? value : "ferrets";
-    },
-    configurable: false,
-  },
   theme: {
     title: "Theme",
     type: "string",
@@ -119,10 +95,11 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   return <Context value={obj}>{children}</Context>;
 };
 
-const useSettings = () => {
+const useSettings = (): Settings => {
   const ctx = useContext(Context);
-  if (!ctx)
-    throw new Error("useSettings must be used within a SettingsProvider");
+  if (!ctx) {
+    throw new Error("useSettings must be used within SettingsProvider");
+  }
   return ctx;
 };
 
