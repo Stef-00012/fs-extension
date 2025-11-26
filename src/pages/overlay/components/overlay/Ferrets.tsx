@@ -11,6 +11,7 @@ import { Transition } from "@headlessui/react";
 
 import FerretCard from "../../../../components/FerretCard";
 import FerretButton from "../../../../components/FerrretButton";
+import Ring from "../../../../components/Ring";
 
 import { useFerrets as useFerrets } from "../../../../hooks/useFerrets";
 import { classes } from "../../../../utils/classes";
@@ -236,9 +237,10 @@ export default function Ferrets(props: FerretsProps) {
           <div ref={playgroupSelector} className="sticky top-0 z-30 w-full">
             {/* Extra div needed to add padding for dropdown arrow. Makes the dropdown box position funky though */}
             <div
-              className="transition-ring w-full rounded-lg bg-framecol px-2 py-1 pr-1 ring-3 ring-white/25 ring-inset data-[at-top=false]:ring-outlinecol dark:bg-framecol-dark"
+              className="transition-ring relative w-full rounded-lg bg-framecol px-2 py-1 pr-1 dark:bg-framecol-dark"
               data-at-top="true"
             >
+              <Ring active={true} thickBottom={false} className="rounded-lg" />
               <select
                 className="text-text mx-auto block w-full bg-framecol text-sm dark:bg-framecol-dark"
                 value={selectedPlaygroup}
@@ -248,6 +250,11 @@ export default function Ferrets(props: FerretsProps) {
                 {(Object.entries(playgroups) as [string, { name: string }][])
                   .filter(
                     ([, group]) => group.name !== playgroups.valhalla.name,
+                  )
+                  .filter(([playgroupKey]) =>
+                    Object.values(rawFerrets ?? {}).some(
+                      (ferret) => ferret.playgroup === playgroupKey,
+                    ),
                   )
                   .sort(([, a], [, b]) => {
                     const prioGroups = new Set<string>([

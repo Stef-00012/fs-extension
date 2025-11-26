@@ -21,7 +21,7 @@ export default function FerretButton(props: FerretButtonProps) {
   return (
     <button
       className={classes(
-        "group/button relative flex shrink-0 flex-col items-center justify-start rounded-lg bg-framecol text-center shadow-lg transition-[filter] hover:brightness-90 dark:bg-framecol-dark",
+        "group/button relative flex shrink-0 flex-col items-center justify-start rounded-lg bg-framecol text-center shadow-lg transition-[filter] hover:brightness-85 dark:bg-framecol-dark",
         className,
       )}
       id={ferretKey}

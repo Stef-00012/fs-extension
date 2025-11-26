@@ -32,3 +32,12 @@
 @theme {
   --default-transition-duration: 300ms;
 }
+
+.text-outline {
+  -webkit-text-stroke: 1px #2d0a03;
+  text-shadow:
+    1px 1px 0 #2d0a03,
+    -1px 1px 0 #2d0a03,
+    1px -1px 0 #2d0a03,
+    -1px -1px 0 #2d0a03;
+}
