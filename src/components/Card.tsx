@@ -27,7 +27,7 @@ export default function Card(props: CardProps) {
       )}
       {children}
 
-      <Ring active={true} className="rounded-3xl" />
+      <Ring className="rounded-3xl" />
     </div>
   );
 }

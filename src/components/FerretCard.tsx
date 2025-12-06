@@ -360,7 +360,7 @@ export default function FerretCard(props: FerretCardProps) {
           </div>
         </div>
 
-        <Ring active={true} />
+        <Ring />
       </div>
     </>
   );

@@ -240,7 +240,7 @@ export default function Ferrets(props: FerretsProps) {
               className="transition-ring relative w-full rounded-lg bg-framecol px-2 py-1 pr-1 dark:bg-framecol-dark"
               data-at-top="true"
             >
-              <Ring active={true} thickBottom={false} className="rounded-lg" />
+              <Ring thickBottom={false} className="rounded-lg" />
               <select
                 className="text-text mx-auto block w-full bg-framecol text-sm dark:bg-framecol-dark"
                 value={selectedPlaygroup}
