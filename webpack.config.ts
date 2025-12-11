@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { basename, dirname, join } from "path";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";

@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { DateTime, Info } from "luxon";
 
 const timezone = process.env.REACT_APP_TIMEZONE || "UTC";

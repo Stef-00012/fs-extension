@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useState } from "react";
 
 import logo from "../../../assets/logo.png";

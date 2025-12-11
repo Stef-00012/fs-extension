@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { FerretsProvider } from "../../hooks/useFerrets";
 import { SettingsProvider } from "./hooks/useSettings";
 

@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 export type ObjectEntries<T extends object> = Array<[keyof T, T[keyof T]]>;
 
 export const typeSafeObjectEntries = <T extends object>(obj: T) =>

@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="react-dom" />

@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { type MouseEventHandler } from "react";
 
 import { useFerret } from "../hooks/useFerrets";

@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { classes } from "../utils/classes";
 
 interface RingProps {

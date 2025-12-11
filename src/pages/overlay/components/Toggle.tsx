@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useCallback, type ChangeEvent } from "react";
 
 import IconCheck from "../../../components/icons/IconCheck";

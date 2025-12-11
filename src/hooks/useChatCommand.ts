@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useCallback, useEffect, useMemo } from "react";
 import tmi, { type ChatUserstate } from "tmi.js";
 

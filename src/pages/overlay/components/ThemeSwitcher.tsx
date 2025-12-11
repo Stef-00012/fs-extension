@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useCallback } from "react";
 import useSettings from "../hooks/useSettings";
 import IconSun from "../../../components/icons/IconSun";

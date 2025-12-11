@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useMemo, type JSX } from "react";
 
 import Tooltip from "../../../components/Tooltip";

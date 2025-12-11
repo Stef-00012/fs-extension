@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useState, useCallback, Fragment, useMemo } from "react";
 
 import FerretCard from "../../../components/FerretCard";

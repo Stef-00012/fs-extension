@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useEffect, useCallback } from "react";
 
 import { classes } from "../../utils/classes";

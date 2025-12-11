@@ -9,7 +9,7 @@ Original code copyright 2023 Alveus Sanctuary Inc. and the Alveus.gg team
 Modifications copyright 2025 Pirate Software
 <gopiratesoftware@gmail.com>
 
-This license does not apply to any images or other media contained within the
+This license does not apply to any fonts, images or other media contained within the
 project. These remain the property of their respective owners. Please contact
 the Pirate Software team if you wish to license any images or other media for use in
 your own projects, or if you have any questions about the license.

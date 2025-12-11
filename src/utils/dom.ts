@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 /**
  * Finds overlay element that is visible under the cursor
  * Uses the center of the target element if triggered by keyboard

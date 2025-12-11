@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { useMemo } from "react";
 
 import IconGlobe from "./icons/IconGlobe";

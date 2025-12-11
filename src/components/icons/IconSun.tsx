@@ -1,3 +1,5 @@
+// Modified by mattermatter.dev @ Pirate Software, 2025
+
 import { BaseIcon, type IconProps } from "./BaseIcon";
 
 // This SVG code is derived from Heroicons (https://heroicons.com)
