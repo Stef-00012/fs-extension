@@ -16,8 +16,8 @@ importers:
         specifier: ^2.2.9
         version: 2.2.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@pirate-software/fs-data':
-        specifier: ^0.8.3
-        version: 0.8.3(tailwindcss@4.1.18)(zod@4.3.5)
+        specifier: ^0.9.0
+        version: 0.9.0(tailwindcss@4.1.18)(zod@4.3.5)
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
@@ -478,8 +478,8 @@ packages:
     resolution: {integrity: sha512-C2Xj8FZ0uHWeCXXqX5B4/gVFQmtSkiuOolzAgutjTfseNOHT3pUjljDZsTSxXFGgio54bCzVFqmEOUrIVk8RDA==}
     engines: {node: '>=20.0.0'}
 
-  '@pirate-software/fs-data@0.8.3':
-    resolution: {integrity: sha512-7tOrwlJ4MNwL+no0JxeSCztVfbi9zetWe77V1l15XIMxfBJEckrssUCYBFNLozZsdMcw28TyAbXgNm0+94sMEw==, tarball: https://npm.pkg.github.com/download/@pirate-software/fs-data/0.8.3/cf219842421f64b2a08d6f5515e5962a09271d1c}
+  '@pirate-software/fs-data@0.9.0':
+    resolution: {integrity: sha512-dY2AXxHnYWRoENS4UODU50+wCqCsBg4wzwrdpe2ITVtOgwhcsar0J29Z33vFOKyLtkP7rgxDXIz8G2kpCaH/3g==, tarball: https://npm.pkg.github.com/download/@pirate-software/fs-data/0.9.0/1094b1a11cb3895a820e3161364439e671d884ed}
     peerDependencies:
       tailwindcss: ^4.0.0
       zod: ^4.0.0
@@ -3712,7 +3712,7 @@ snapshots:
       tslib: 2.8.1
       tsyringe: 4.10.0
 
-  '@pirate-software/fs-data@0.8.3(tailwindcss@4.1.18)(zod@4.3.5)':
+  '@pirate-software/fs-data@0.9.0(tailwindcss@4.1.18)(zod@4.3.5)':
     dependencies:
       tailwindcss: 4.1.18
       zod: 4.3.5
