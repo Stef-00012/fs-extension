@@ -16,11 +16,7 @@ import IconWelcome from "../../../../components/icons/IconWelcome";
 import IconFerrets from "../../../../components/icons/IconFerrets";
 import IconSettings from "../../../../components/icons/IconSettings";
 
-import {
-  isAliveFerret,
-  useFerrets,
-  usePlaygroups,
-} from "../../../../hooks/useFerrets";
+import { isAliveFerret, useFerrets } from "../../../../hooks/useFerrets";
 import { classes } from "../../../../utils/classes";
 import { visibleUnderCursor } from "../../../../utils/dom";
 
@@ -65,9 +61,7 @@ const overlayOptions = [
       <FerretsOverlay
         {...props}
         showPlaygroupSelector={true}
-        availablePlaygroups={Object.keys(usePlaygroups() ?? {}).filter(
-          (pg) => pg !== "valhalla",
-        )}
+        ferretFilter={(ferret) => isAliveFerret(ferret)}
       />
     ),
     condition: ({ ferrets }) =>
@@ -81,8 +75,8 @@ const overlayOptions = [
     component: (props) => (
       <FerretsOverlay
         {...props}
-        showPlaygroupSelector={false}
-        availablePlaygroups={["valhalla"]}
+        showPlaygroupSelector={true}
+        ferretFilter={(ferret) => !isAliveFerret(ferret)}
       />
     ),
     condition: ({ ferrets }) =>
@@ -244,7 +238,7 @@ export default function Overlay() {
     if (!activeFerret) return;
     const ferret = ferrets?.[activeFerret.key ?? ""];
     if (!ferret) return;
-    setVisibleOption(ferret.playgroup === "valhalla" ? "valhalla" : "ferrets"); //TODO: the list of playgroups per option isn't exposed since it's part of the result of the compoment function, would probably need more refactoring to support multiple playgroup-specific tabs, but since that's not likely to be needed, this bodge will do.
+    setVisibleOption(isAliveFerret(ferret) ? "ferrets" : "valhalla");
   }, [activeFerret]);
 
   return (

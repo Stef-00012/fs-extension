@@ -2,6 +2,7 @@
 
 import { typeSafeObjectEntries } from "../../../../utils/helpers";
 import { classes } from "../../../../utils/classes";
+import packageJson from "../../../../../package.json";
 
 import useSettings from "../../hooks/useSettings";
 
@@ -12,6 +13,7 @@ import ThemeSwitcher from "../ThemeSwitcher";
 import type { OverlayOptionProps } from "./Overlay";
 import IconExternal from "../../../../components/icons/IconExternal";
 import yarrLove from "../../../../assets/yarrLove.png";
+import { SCHEMA_VERSION_ID } from "@pirate-software/fs-data/build/api";
 
 const linkClass =
   "text-nowrap text-text transition-colors hover:text-highlight focus:text-highlight dark:hover:text-highlight-dark dark:focus:text-highlight-dark";
@@ -45,6 +47,10 @@ export default function Settings(props: OverlayOptionProps) {
               </li>
             );
           })}
+          <div className="text-center text-sm italic">
+            Ferret Software Extension v{packageJson.version} with API{" "}
+            {SCHEMA_VERSION_ID}
+          </div>
         </ul>
       </Card>
       <Card title="Credits" className={classes("top-3", className)}>

@@ -63,7 +63,7 @@ export default function App() {
               process.env.NODE_ENV === "development" &&
               settings.disableOverlayHiding.value
             )
-            ? "opacity-0 [&_*]:pointer-events-none"
+            ? "opacity-0 **:pointer-events-none"
             : "opacity-100",
         )}
         onMouseEnter={(e) => interacted(e)}

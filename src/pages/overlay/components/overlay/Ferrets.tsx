@@ -32,29 +32,28 @@ const arrowPathClass =
 const hiddenClass = "opacity-0 pointer-events-none";
 
 export interface FerretsProps extends OverlayOptionProps {
-  availablePlaygroups: string[];
   showPlaygroupSelector: boolean;
+  ferretFilter: (ferret: Ferret) => boolean;
 }
 
 export default function Ferrets(props: FerretsProps) {
   const {
     context: { activeFerret: activeFerret, setActiveFerret: setActiveFerret },
     className,
-    availablePlaygroups,
     showPlaygroupSelector,
+    ferretFilter,
   } = props;
 
   const [selectedPlaygroup, setSelectedPlaygroup] = useState<string>("all");
   const rawFerrets = useFerrets(); // all ferrets, unfiltered
   const playgroups = usePlaygroups();
   const filteredFerrets = useMemo((): Record<string, Ferret> => {
-    // only ferrets which can be shown in this menu according to filterFerrets
     return Object.fromEntries(
       typeSafeObjectEntries(rawFerrets).filter(([, ferret]) =>
-        availablePlaygroups.includes(ferret.playgroup),
+        ferretFilter(ferret),
       ),
     );
-  }, [rawFerrets, availablePlaygroups]);
+  }, [rawFerrets, ferretFilter]);
   const selectedFerrets = useMemo(
     // only ferrets in the selected playgroup
     () =>
@@ -148,9 +147,7 @@ export default function Ferrets(props: FerretsProps) {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<string>).detail;
-      if (detail !== "valhalla") {
-        if (detail) setSelectedPlaygroup(detail);
-      }
+      if (detail) setSelectedPlaygroup(detail);
     };
 
     window.addEventListener("fsext:selectPlaygroup", handler as EventListener);
@@ -241,7 +238,7 @@ export default function Ferrets(props: FerretsProps) {
       <div className="relative z-10 flex flex-col items-center">
         <div
           ref={ferretList}
-          className="list-fade -my-[var(--twitch-vertical-padding)] scrollbar-none flex w-40 flex-col items-center gap-4 overflow-scroll px-4 py-[calc(var(--twitch-vertical-padding)+var(--list-fade-padding))]"
+          className="list-fade -my-(--twitch-vertical-padding) scrollbar-none flex w-40 flex-col items-center gap-4 overflow-scroll px-4 py-[calc(var(--twitch-vertical-padding)+var(--list-fade-padding))]"
           onScroll={(e) => {
             handleArrowVisibility();
             // Update shadow based on scroll position
@@ -254,7 +251,6 @@ export default function Ferrets(props: FerretsProps) {
         >
           {showPlaygroupSelector && (
             <div ref={playgroupSelector} className="sticky top-0 z-30 w-full">
-              {/* Extra div needed to add padding for dropdown arrow. Makes the dropdown box position funky though */}
               <div
                 className="transition-ring relative w-full rounded-lg bg-framecol pr-1 dark:bg-framecol-dark"
                 data-at-top="true"
@@ -266,7 +262,7 @@ export default function Ferrets(props: FerretsProps) {
                   onChange={(e) => setSelectedPlaygroup(e.target.value)}
                 >
                   <option value="all">All Playgroups</option>
-                  {(Object.entries(playgroups) as [string, { name: string }][]) //TODO: this is quite messy. the function is to ensure playgroups are ordered as all, genpop, solo, then rest alphabetical a-z.
+                  {(Object.entries(playgroups) as [string, { name: string }][])
                     .filter(([playgroupKey]) =>
                       Object.values(filteredFerrets ?? {}).some(
                         (ferret) => ferret.playgroup === playgroupKey,
@@ -307,7 +303,7 @@ export default function Ferrets(props: FerretsProps) {
           ref={upArrowRef}
           className={classes(
             arrowClass,
-            "-top-[var(--twitch-vertical-padding)]",
+            "-top-(--twitch-vertical-padding)",
             hiddenClass,
           )}
           onClick={(e) => ferretListScroll(e, 250)}
@@ -322,7 +318,7 @@ export default function Ferrets(props: FerretsProps) {
           ref={downArrowRef}
           className={classes(
             arrowClass,
-            "-bottom-[var(--twitch-vertical-padding)] rotate-180",
+            "-bottom-(--twitch-vertical-padding) rotate-180",
           )}
           onClick={(e) => ferretListScroll(e, -250)}
           title="Scroll down"
@@ -339,7 +335,7 @@ export default function Ferrets(props: FerretsProps) {
             key={key}
             ferret={key}
             onClose={() => setActiveFerret({})}
-            className="z-0 col-start-2 row-start-1 origin-[center_left] self-center transition-[opacity,transform,translate] will-change-[opacity,transform,translate] data-[closed]:-translate-x-10 data-[closed]:opacity-0 data-[closed]:motion-reduce:translate-x-0"
+            className="z-0 col-start-2 row-start-1 origin-[center_left] self-center transition-[opacity,transform,translate] will-change-[opacity,transform,translate] data-closed:-translate-x-10 data-closed:opacity-0 data-closed:motion-reduce:translate-x-0"
           />
         </Transition>
       ))}

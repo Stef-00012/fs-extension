@@ -5,7 +5,7 @@ import { useState, useCallback, Fragment, useMemo } from "react";
 import FerretCard from "../../../components/FerretCard";
 import FerretButton from "../../../components/FerrretButton";
 
-import { useFerrets } from "../../../hooks/useFerrets";
+import { isAliveFerret, useFerrets } from "../../../hooks/useFerrets";
 
 import useChatCommand from "../../../hooks/useChatCommand";
 import { typeSafeObjectEntries } from "../../../utils/helpers";
@@ -20,8 +20,8 @@ export default function Ferrets() {
 
   const ferrets = useMemo(
     () =>
-      typeSafeObjectEntries(rawFerrets ?? {}).filter(([, f]) =>
-        valhallaMode ? f.playgroup === "valhalla" : f.playgroup !== "valhalla",
+      typeSafeObjectEntries(rawFerrets ?? {}).filter(
+        ([, f]) => valhallaMode && isAliveFerret(f),
       ),
     [rawFerrets, valhallaMode],
   );
