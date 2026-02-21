@@ -5,7 +5,6 @@ import {
   useEffect,
   useCallback,
   useMemo,
-  useState,
   type MouseEvent,
 } from "react";
 import { Transition } from "@headlessui/react";
@@ -38,13 +37,12 @@ export interface FerretsProps extends OverlayOptionProps {
 
 export default function Ferrets(props: FerretsProps) {
   const {
-    context: { activeFerret: activeFerret, setActiveFerret: setActiveFerret },
+    context: { activeCard, setActiveCard },
     className,
     showPlaygroupSelector,
     ferretFilter,
   } = props;
 
-  const [selectedPlaygroup, setSelectedPlaygroup] = useState<string>("all");
   const rawFerrets = useFerrets(); // all ferrets, unfiltered
   const playgroups = usePlaygroups();
   const filteredFerrets = useMemo((): Record<string, Ferret> => {
@@ -60,11 +58,11 @@ export default function Ferrets(props: FerretsProps) {
       typeSafeObjectEntries(filteredFerrets)
         .filter(
           ([, ferret]) =>
-            selectedPlaygroup === "all" ||
-            ferret.playgroup === selectedPlaygroup,
+            activeCard.playgroup === "all" ||
+            ferret.playgroup === activeCard.playgroup,
         )
         .sort(([, a], [, b]) => a.name.localeCompare(b.name)),
-    [filteredFerrets, selectedPlaygroup],
+    [filteredFerrets, activeCard],
   );
 
   const upArrowRef = useRef<HTMLButtonElement>(null);
@@ -74,11 +72,11 @@ export default function Ferrets(props: FerretsProps) {
 
   // Scroll the ferrets list to the selected ferret
   useEffect(() => {
-    if (!ferretList.current || !activeFerret.key) return;
+    if (!ferretList.current || !activeCard.ferret) return;
 
     const offset = 200; // offset to put card at top
     const anchorElement = ferretList.current.querySelector(
-      `#${activeFerret.key}`,
+      `#${activeCard.ferret}`,
     );
     if (anchorElement instanceof HTMLElement) {
       ferretList.current.scrollTo({
@@ -86,7 +84,7 @@ export default function Ferrets(props: FerretsProps) {
         behavior: "smooth",
       });
     }
-  }, [activeFerret.key]);
+  }, [activeCard.ferret]);
 
   // Allow the list to be scrolled via the buttons
   const ferretListScroll = useCallback(
@@ -146,8 +144,22 @@ export default function Ferrets(props: FerretsProps) {
   // When changing playgroup, trigger event (used by FerretCard)
   useEffect(() => {
     const handler = (e: Event) => {
+      console.log(
+        "detail",
+        (e as CustomEvent<string>).detail,
+        "activeCard",
+        activeCard,
+      );
       const detail = (e as CustomEvent<string>).detail;
-      if (detail) setSelectedPlaygroup(detail);
+      if (activeCard.playgroup === detail) return;
+      else {
+        const currentFerret = rawFerrets?.[activeCard.ferret ?? ""];
+        if (currentFerret?.playgroup === detail) {
+          setActiveCard({ ferret: activeCard.ferret, playgroup: detail });
+        } else {
+          setActiveCard({ playgroup: detail });
+        }
+      }
     };
 
     window.addEventListener("fsext:selectPlaygroup", handler as EventListener);
@@ -156,22 +168,28 @@ export default function Ferrets(props: FerretsProps) {
         "fsext:selectPlaygroup",
         handler as EventListener,
       );
-  }, []);
+  }, [activeCard, setActiveCard, rawFerrets]);
 
   // Switch ferret (used by FerretCard)
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<string>).detail;
       if (detail) {
-        setActiveFerret({ key: detail });
+        const ferret = rawFerrets?.[detail];
+        if (!ferret) return;
         // If the new ferret isn't in the current playgroup, switch to "all"
         const ferretToSelect = rawFerrets?.[detail];
+        if (!ferretToSelect) {
+          console.error(`Ferret ${detail} not found`);
+          return;
+        }
         if (
-          ferretToSelect &&
-          selectedPlaygroup !== "all" &&
-          ferretToSelect.playgroup !== selectedPlaygroup
+          activeCard.playgroup !== "all" &&
+          ferretToSelect.playgroup !== activeCard.playgroup
         ) {
-          setSelectedPlaygroup("all");
+          setActiveCard({ ferret: detail, playgroup: "all" });
+        } else if (ferretToSelect.playgroup === activeCard.playgroup) {
+          setActiveCard({ ferret: detail, playgroup: activeCard.playgroup });
         }
       }
     };
@@ -182,7 +200,12 @@ export default function Ferrets(props: FerretsProps) {
         "fsext:selectFerret",
         handler as EventListener,
       );
-  }, [setActiveFerret, selectedPlaygroup, rawFerrets]);
+  }, [setActiveCard, rawFerrets]);
+
+  //TEMP
+  useEffect(() => {
+    console.log("Current selection changed", activeCard);
+  }, [activeCard]);
 
   // When ferret/playgroup changes, scroll to selected ferret
   useEffect(() => {
@@ -208,14 +231,14 @@ export default function Ferrets(props: FerretsProps) {
     };
 
     // If ferret in selected playgroup, scroll to it
-    if (activeFerret.key) {
-      const found = selectedFerrets.find(([key]) => key === activeFerret.key);
+    if (activeCard.ferret) {
+      const found = selectedFerrets.find(([key]) => key === activeCard.ferret);
       if (
         found &&
-        (selectedPlaygroup === "all" ||
-          found[1]?.playgroup === selectedPlaygroup)
+        (activeCard.playgroup === "all" ||
+          found[1]?.playgroup === activeCard.playgroup)
       ) {
-        scrollToAnchor(activeFerret.key);
+        scrollToAnchor(activeCard.ferret);
       } else {
         scrollToAnchor();
       }
@@ -226,7 +249,7 @@ export default function Ferrets(props: FerretsProps) {
     // Trigger arrow buttons update
     const t = window.setTimeout(() => handleArrowVisibility(), 200);
     return () => window.clearTimeout(t);
-  }, [selectedPlaygroup, selectedFerrets, handleArrowVisibility]);
+  }, [activeCard.playgroup, selectedFerrets, handleArrowVisibility]);
 
   return (
     <div
@@ -258,8 +281,8 @@ export default function Ferrets(props: FerretsProps) {
                 <Ring thickBottom={false} className="rounded-lg" />
                 <select
                   className="text-text mx-auto block w-full rounded-lg border-0 bg-framecol px-2 py-1 text-sm outline-0 dark:bg-framecol-dark"
-                  value={selectedPlaygroup}
-                  onChange={(e) => setSelectedPlaygroup(e.target.value)}
+                  value={activeCard.playgroup}
+                  onChange={(e) => setActiveCard({ playgroup: e.target.value })}
                 >
                   <option value="all">All Playgroups</option>
                   {(Object.entries(playgroups) as [string, { name: string }][])
@@ -291,10 +314,14 @@ export default function Ferrets(props: FerretsProps) {
               key={key}
               ferret={key}
               onClick={() => {
-                setActiveFerret((prev) => (prev.key === key ? {} : { key }));
+                setActiveCard((prev) =>
+                  prev.ferret === key
+                    ? { playgroup: prev.playgroup }
+                    : { ferret: key, playgroup: activeCard.playgroup },
+                );
               }}
               className="w-full"
-              active={activeFerret.key === key}
+              active={activeCard.ferret === key}
             />
           ))}
         </div>
@@ -330,11 +357,11 @@ export default function Ferrets(props: FerretsProps) {
       </div>
 
       {selectedFerrets.map(([key]) => (
-        <Transition show={activeFerret.key === key} key={key}>
+        <Transition show={activeCard.ferret === key} key={key}>
           <FerretCard
             key={key}
             ferret={key}
-            onClose={() => setActiveFerret({})}
+            onClose={() => setActiveCard({ playgroup: activeCard.playgroup })}
             className="z-0 col-start-2 row-start-1 origin-[center_left] self-center transition-[opacity,transform,translate] will-change-[opacity,transform,translate] data-closed:-translate-x-10 data-closed:opacity-0 data-closed:motion-reduce:translate-x-0"
           />
         </Transition>

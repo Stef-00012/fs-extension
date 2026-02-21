@@ -96,15 +96,16 @@ export const isValidOverlayKey = (key: string) =>
 
 export type OverlayKey = (typeof overlayOptions)[number]["key"] | "";
 
-type ActiveFerretState = {
-  key?: string;
+type ActiveCardState = {
+  ferret?: string;
+  playgroup: string;
   isCommand?: boolean;
 };
 
 export interface OverlayOptionProps {
   context: {
-    activeFerret: ActiveFerretState;
-    setActiveFerret: Dispatch<SetStateAction<ActiveFerretState>>;
+    activeCard: ActiveCardState;
+    setActiveCard: Dispatch<SetStateAction<ActiveCardState>>;
   };
   className?: string;
 }
@@ -131,8 +132,10 @@ export default function Overlay() {
     [ferrets],
   );
 
-  const [activeFerret, setActiveFerret] = useState<ActiveFerretState>({});
-  const [visibleOption, setVisibleOption] = useState<OverlayKey>(
+  const [activeCard, setActiveCard] = useState<ActiveCardState>({
+    playgroup: "all",
+  });
+  const [visibleTab, setVisibleTab] = useState<OverlayKey>(
     settings.openedMenu.value,
   );
   const timeoutRef = useRef<NodeJS.Timeout>(null);
@@ -140,12 +143,12 @@ export default function Overlay() {
 
   // update setting when opened menu changes
   useEffect(() => {
-    settings.openedMenu.change(visibleOption);
-  }, [visibleOption]);
+    settings.openedMenu.change(visibleTab);
+  }, [visibleTab]);
 
   // open saved (or default) menu when mounted
   useEffect(() => {
-    setVisibleOption(settings.openedMenu.value);
+    setVisibleTab(settings.openedMenu.value);
   }, [settings.openedMenu.value]);
 
   // When a chat command is run, wake the overlay
@@ -154,17 +157,23 @@ export default function Overlay() {
       (command: string) => {
         if (!settings.disableChatPopup.value) {
           const ferret = ferrets?.[command];
-          if (ferret) setActiveFerret({ key: command, isCommand: true });
-          else if (command !== "welcome") return;
-
-          // Show the card
-          setVisibleOption(ferret ? "ferrets" : "welcome");
+          if (ferret)
+            setActiveCard({
+              ferret: command,
+              playgroup: ferret.playgroup,
+              isCommand: true,
+            });
+          else if (command === "welcome") {
+            setVisibleTab("welcome");
+          } else {
+            console.log(`Unknown command received: ${command}`);
+            return;
+          }
 
           // Dismiss the overlay after a delay
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
           timeoutRef.current = setTimeout(() => {
-            setVisibleOption("");
-            setActiveFerret({});
+            setVisibleTab("");
           }, commandTimeout);
 
           // Track that we're waking up, so that we don't immediately clear the timeout, and wake the overlay
@@ -198,7 +207,7 @@ export default function Overlay() {
   // Handle body clicks, dismissing the overlay if the user clicks outside of it
   const bodyClick = useCallback((e: MouseEvent) => {
     if (!visibleUnderCursor(e)) {
-      setVisibleOption("");
+      setVisibleTab("");
     }
   }, []);
 
@@ -227,19 +236,19 @@ export default function Overlay() {
   // Generate the context for the overlay options
   const context = useMemo<OverlayOptionProps["context"]>(
     () => ({
-      activeFerret: activeFerret,
-      setActiveFerret: setActiveFerret,
+      activeCard: activeCard,
+      setActiveCard: setActiveCard,
     }),
-    [activeFerret],
+    [activeCard],
   );
 
   // Set visible option to relevant tab when activeFerret changes
   useEffect(() => {
-    if (!activeFerret) return;
-    const ferret = ferrets?.[activeFerret.key ?? ""];
+    if (!activeCard) return;
+    const ferret = ferrets?.[activeCard.ferret ?? ""];
     if (!ferret) return;
-    setVisibleOption(isAliveFerret(ferret) ? "ferrets" : "valhalla");
-  }, [activeFerret]);
+    setVisibleTab(isAliveFerret(ferret) ? "ferrets" : "valhalla");
+  }, [activeCard]);
 
   return (
     <div
@@ -253,11 +262,7 @@ export default function Overlay() {
           hiddenClass,
       )}
     >
-      <Buttons
-        options={options}
-        onClick={setVisibleOption}
-        active={visibleOption}
-      />
+      <Buttons options={options} onClick={setVisibleTab} active={visibleTab} />
       <div className="relative h-full w-full">
         {options.map((option) => (
           <option.component
@@ -265,7 +270,7 @@ export default function Overlay() {
             context={context}
             className={classes(
               "transition-[opacity,visibility,transform,translate] will-change-[opacity,transform,translate]",
-              visibleOption !== option.key && hiddenClass,
+              visibleTab !== option.key && hiddenClass,
             )}
           />
         ))}
