@@ -132,9 +132,7 @@ export default function Overlay() {
     [ferrets],
   );
 
-  const [activeCard, setActiveCard] = useState<ActiveCardState>({
-    playgroup: "all",
-  });
+  const [activeCard, setActiveCard] = useState<ActiveCardState>({});
   const [visibleTab, setVisibleTab] = useState<OverlayKey>(
     settings.openedMenu.value,
   );

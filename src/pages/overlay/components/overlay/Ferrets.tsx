@@ -44,7 +44,7 @@ export default function Ferrets(props: FerretsProps) {
     ferretFilter,
   } = props;
 
-  const rawFerrets = useFerrets(); // all ferrets, unfiltered
+  const rawFerrets = useFerrets();
   const rawPlaygroups = usePlaygroups();
 
   const filteredFerrets = useMemo((): Record<string, Ferret> => {
@@ -57,43 +57,30 @@ export default function Ferrets(props: FerretsProps) {
 
   const filteredPlaygroups = useMemo((): Record<string, Playgroup> => {
     return Object.fromEntries(
-      typeSafeObjectEntries(rawPlaygroups).filter(([, group]) =>
-        Object.values(filteredFerrets).some(
-          (ferret) => ferret.playgroup === group.name,
-        ),
-      ),
-    );
-  }, [rawFerrets, rawPlaygroups]);
-
-  const availablePlaygroups = useMemo(
-    () =>
-      typeSafeObjectEntries(filteredPlaygroups)
-        .filter(
-          ([key]) =>
-            activeCard.playgroup === "all" || key === activeCard.playgroup,
+      typeSafeObjectEntries(rawPlaygroups)
+        .filter(([, group]) =>
+          Object.values(filteredFerrets).some(
+            (ferret) => ferret.playgroup === group.name,
+          ),
         )
         .sort(([, a], [, b]) => {
           // sort by number of ferrets
-          const aCount = Object.values(rawFerrets ?? {}).filter(
+          const aCount = Object.values(filteredFerrets ?? {}).filter(
             (ferret) => ferret.playgroup === a.name,
           ).length;
-          const bCount = Object.values(rawFerrets ?? {}).filter(
+          const bCount = Object.values(filteredFerrets ?? {}).filter(
             (ferret) => ferret.playgroup === b.name,
           ).length;
           return bCount - aCount;
         }),
-    [filteredPlaygroups],
-  );
+    );
+  }, [rawFerrets, rawPlaygroups]);
 
   const selectedFerrets = useMemo(
     // only ferrets in the selected playgroup
     () =>
       typeSafeObjectEntries(filteredFerrets)
-        .filter(
-          ([, ferret]) =>
-            activeCard.playgroup === "all" ||
-            ferret.playgroup === activeCard.playgroup,
-        )
+        .filter(([, ferret]) => ferret.playgroup === activeCard.playgroup)
         .sort(([, a], [, b]) => a.name.localeCompare(b.name)),
     [filteredFerrets, activeCard],
   );
@@ -227,22 +214,21 @@ export default function Ferrets(props: FerretsProps) {
   // Check the arrow visibility on mount, as browsers restore odd scroll positions
   // Also, check it whenever the ferret list changes as the list may change size
   useEffect(() => {
-    handleFerretArrowVisibility();
-
-    // If the window is resized, check the arrow visibility again
     window.addEventListener("resize", handleFerretArrowVisibility);
     return () =>
       window.removeEventListener("resize", handleFerretArrowVisibility);
-  }, [handleFerretArrowVisibility, selectedFerrets]);
+  }, [handleFerretArrowVisibility]);
 
   useEffect(() => {
-    handlePlaygroupArrowVisibility();
+    if (!activeCard.playgroup) return;
 
-    // If the window is resized, check the arrow visibility again
-    window.addEventListener("resize", handlePlaygroupArrowVisibility);
-    return () =>
-      window.removeEventListener("resize", handlePlaygroupArrowVisibility);
-  }, [handlePlaygroupArrowVisibility, selectedFerrets]);
+    // Wait until the updated ferret list has been painted before measuring visibility.
+    const frame = window.requestAnimationFrame(() => {
+      handleFerretArrowVisibility();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeCard.playgroup, selectedFerrets, handleFerretArrowVisibility]);
 
   // When changing playgroup, trigger event (used by FerretCard)
   useEffect(() => {
@@ -280,20 +266,12 @@ export default function Ferrets(props: FerretsProps) {
       if (detail) {
         const ferret = rawFerrets?.[detail];
         if (!ferret) return;
-        // If the new ferret isn't in the current playgroup, switch to "all"
         const ferretToSelect = rawFerrets?.[detail];
         if (!ferretToSelect) {
           console.error(`Ferret ${detail} not found`);
           return;
         }
-        if (
-          activeCard.playgroup !== "all" &&
-          ferretToSelect.playgroup !== activeCard.playgroup
-        ) {
-          setActiveCard({ ferret: detail, playgroup: "all" });
-        } else if (ferretToSelect.playgroup === activeCard.playgroup) {
-          setActiveCard({ ferret: detail, playgroup: activeCard.playgroup });
-        }
+        setActiveCard({ ferret: detail, playgroup: ferretToSelect.playgroup });
       }
     };
 
@@ -336,11 +314,7 @@ export default function Ferrets(props: FerretsProps) {
     // If ferret in selected playgroup, scroll to it
     if (activeCard.ferret) {
       const found = selectedFerrets.find(([key]) => key === activeCard.ferret);
-      if (
-        found &&
-        (activeCard.playgroup === "all" ||
-          found[1]?.playgroup === activeCard.playgroup)
-      ) {
+      if (found && found[1]?.playgroup === activeCard.playgroup) {
         scrollToAnchor(activeCard.ferret);
       } else {
         scrollToAnchor();
@@ -351,17 +325,18 @@ export default function Ferrets(props: FerretsProps) {
 
     // Trigger arrow buttons update
     const t = window.setTimeout(() => {
-      handleFerretArrowVisibility();
       handlePlaygroupArrowVisibility();
+      if (activeCard.playgroup) {
+        handleFerretArrowVisibility();
+      }
     }, 200);
     return () => window.clearTimeout(t);
   }, [
     activeCard.playgroup,
     selectedFerrets,
-    handleFerretArrowVisibility,
     handlePlaygroupArrowVisibility,
+    handleFerretArrowVisibility,
   ]);
-
   return (
     <div
       className={classes(
@@ -427,7 +402,7 @@ export default function Ferrets(props: FerretsProps) {
         </button>
       </div>
 
-      {availablePlaygroups.map(([key]) => (
+      {typeSafeObjectEntries(filteredPlaygroups).map(([key]) => (
         <Transition show={activeCard.playgroup === key} key={key}>
           <PlaygroupCard
             key={key}
@@ -502,7 +477,10 @@ export default function Ferrets(props: FerretsProps) {
       </Transition>
 
       {selectedFerrets.map(([key]) => (
-        <Transition show={activeCard.ferret === key} key={key}>
+        <Transition
+          show={activeCard.playgroup !== undefined && activeCard.ferret === key}
+          key={key}
+        >
           <FerretCard
             key={key}
             ferret={key}

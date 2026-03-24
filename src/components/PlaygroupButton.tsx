@@ -32,17 +32,17 @@ export default function PlaygroupButton(props: PlaygroupButtonProps) {
       type="button"
     >
       <img
-        className="aspect-[2.2] w-full shrink-0 rounded-t-lg object-cover"
+        className="aspect-[1.4] w-full shrink-0 rounded-t-lg object-cover"
         src={playgroup.image}
         alt={`Image of the playgroup ${playgroup.name}`}
         loading="lazy"
       />
 
-      <div className="my-auto px-1 pt-2 pb-2">
+      <div className="my-auto px-1 pt-1 pb-2">
         <h2 className="text-sm text-balance">{playgroup.name}</h2>
-        <h3 className="text-xs text-balance text-subtitlecol dark:text-subtitlecol-dark">
+        {/* <h3 className="text-xs text-balance text-subtitlecol dark:text-subtitlecol-dark">
           Playgroup
-        </h3>
+        </h3> */}
       </div>
 
       <Ring active={active} />

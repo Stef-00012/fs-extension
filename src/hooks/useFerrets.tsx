@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import fallbackDataRaw from "../assets/fallbackData.json";
+
 import {
   apiMetaSchema,
   ferretsApiSchema,

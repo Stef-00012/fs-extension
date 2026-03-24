@@ -345,7 +345,7 @@ export default function FerretCard(props: FerretCardProps) {
             <div>
               <h3 className={headingClass}>Playgroup</h3>
               <Tooltip text={playgroup?.tooltip ?? "No description available"}>
-                <a
+                {/* <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -357,13 +357,15 @@ export default function FerretCard(props: FerretCardProps) {
                   }}
                   className={`inline-flex items-center gap-1 text-left no-underline ${linkClass} hover:underline`}
                   aria-label={`Filter by ${playgroup?.name}`}
-                >
+                > */}
+                <p className={`inline-flex items-center gap-1 text-left`}>
                   {playgroup?.name}
                   <IconInfo
                     size={15}
                     className="rounded-full outline-highlight transition-[outline] hover:outline-3"
                   />
-                </a>
+                </p>
+                {/* </a> */}
                 &nbsp;
               </Tooltip>
             </div>
