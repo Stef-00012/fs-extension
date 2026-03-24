@@ -95,4 +95,4 @@ jobs:
         run: cp .env.sample .env
 
       - name: Build extension
-        run: pnpm build
+        run: pnpm exec cross-env NODE_OPTIONS="--loader ts-node/esm" webpack
