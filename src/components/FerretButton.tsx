@@ -2,19 +2,26 @@
 
 import { type MouseEventHandler } from "react";
 
-import { useFerret } from "../hooks/useFerrets";
+import { useFerret, usePlaygroup } from "../hooks/useFerrets";
 import { classes } from "../utils/classes";
 import Ring from "./Ring";
 
 interface FerretButtonProps {
   ferret: string;
+  showPlaygroup: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   active?: boolean;
   className?: string;
 }
 
 export default function FerretButton(props: FerretButtonProps) {
-  const { ferret: ferretKey, onClick, active, className } = props;
+  const {
+    ferret: ferretKey,
+    showPlaygroup,
+    onClick,
+    active,
+    className,
+  } = props;
   const ferretRaw = useFerret(ferretKey);
 
   if (!ferretRaw) return null;
@@ -32,17 +39,27 @@ export default function FerretButton(props: FerretButtonProps) {
       type="button"
     >
       <img
-        className="aspect-[1.4] w-full shrink-0 rounded-t-lg object-cover"
+        className={classes(
+          "w-full shrink-0 rounded-t-lg object-cover",
+          showPlaygroup ? "aspect-[2.2]" : "aspect-[1.4]",
+        )}
         src={ferret.mugshot}
         alt={`Mugshot of ${ferret.name}`}
         loading="lazy"
       />
 
-      <div className="my-auto px-1 pt-1 pb-2">
+      <div
+        className={classes(
+          "my-auto px-1 pb-2",
+          showPlaygroup ? "pt-2" : "py-1",
+        )}
+      >
         <h2 className="text-sm text-balance">{ferret.name}</h2>
-        {/* <h3 className="text-xs text-balance text-subtitlecol dark:text-subtitlecol-dark">
-          {usePlaygroup(ferret.playgroup)?.name}
-        </h3> */}
+        {showPlaygroup && (
+          <h3 className="text-xs text-balance text-subtitlecol dark:text-subtitlecol-dark">
+            {usePlaygroup(ferret.playgroup)?.name}
+          </h3>
+        )}
       </div>
 
       <Ring active={active} />

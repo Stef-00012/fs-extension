@@ -29,7 +29,7 @@ export default function ThemeToggle() {
     <button
       onClick={handleClick}
       className="group -mr-2 rounded-full p-2 outline-highlight transition-[outline] hover:outline-2"
-      title={`Theme: ${getLabel()}`}
+      title={`${getLabel()}`}
       aria-label={`Toggle theme (currently ${getLabel()})`}
     >
       {getIcon()}

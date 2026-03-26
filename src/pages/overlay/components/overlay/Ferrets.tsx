@@ -432,6 +432,7 @@ export default function Ferrets(props: FerretsProps) {
             {selectedFerrets.map(([key]) => (
               <FerretButton
                 key={key}
+                showPlaygroup={false}
                 ferret={key}
                 onClick={() => {
                   setActiveCard((prev) =>

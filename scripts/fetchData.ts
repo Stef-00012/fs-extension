@@ -66,14 +66,14 @@ async function fetchData(url: string): Promise<any> {
     return processFetchResponse(data);
   }
 
-  return new Promise((_, reject) => {
+  return new Promise((resolve, reject) => {
     get(url, (res) => {
       let data = "";
       res.on("data", (chunk) => {
         data += chunk;
       });
       res.on("end", () => {
-        return processFetchResponse(data);
+        resolve(processFetchResponse(data));
       });
     }).on("error", (err) => {
       reject(err);
@@ -99,6 +99,8 @@ async function main() {
     console.error("Failed to fetch or save data:", err);
     process.exit(1);
   }
+
+  console.log("Done.");
 }
 
 main();
