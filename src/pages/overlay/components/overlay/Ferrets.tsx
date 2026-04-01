@@ -283,11 +283,6 @@ export default function Ferrets(props: FerretsProps) {
       );
   }, [setActiveCard, rawFerrets]);
 
-  //TEMP
-  useEffect(() => {
-    console.log("Current selection changed", activeCard);
-  }, [activeCard]);
-
   // When ferret/playgroup changes, scroll to selected ferret
   useEffect(() => {
     const list = ferretList.current;

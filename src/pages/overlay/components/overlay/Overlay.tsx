@@ -16,7 +16,11 @@ import IconWelcome from "../../../../components/icons/IconWelcome";
 import IconFerrets from "../../../../components/icons/IconFerrets";
 import IconSettings from "../../../../components/icons/IconSettings";
 
-import { isAliveFerret, useFerrets } from "../../../../hooks/useFerrets";
+import {
+  isAliveFerret,
+  useFerrets,
+  usePlaygroups,
+} from "../../../../hooks/useFerrets";
 import { classes } from "../../../../utils/classes";
 import { visibleUnderCursor } from "../../../../utils/dom";
 
@@ -123,6 +127,7 @@ export default function Overlay() {
   } = useSleeping();
 
   const ferrets = useFerrets();
+  const playgroups = usePlaygroups();
   const options = useMemo(
     () =>
       overlayOptions.filter(
@@ -155,13 +160,19 @@ export default function Overlay() {
       (command: string) => {
         if (!settings.disableChatPopup.value) {
           const ferret = ferrets?.[command];
-          if (ferret)
+          const playgroup = playgroups?.[command];
+          if (ferret) {
             setActiveCard({
               ferret: command,
               playgroup: ferret.playgroup,
               isCommand: true,
             });
-          else if (command === "welcome") {
+          } else if (playgroup) {
+            setActiveCard({
+              playgroup: command,
+              isCommand: true,
+            });
+          } else if (command === "welcome") {
             setVisibleTab("welcome");
           } else {
             console.log(`Unknown command received: ${command}`);
@@ -179,7 +190,7 @@ export default function Overlay() {
           wake(commandTimeout);
         }
       },
-      [settings.disableChatPopup.value, ferrets, wake],
+      [settings.disableChatPopup.value, ferrets, playgroups, wake],
     ),
   );
 

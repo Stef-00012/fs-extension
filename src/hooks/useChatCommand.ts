@@ -5,7 +5,7 @@ import tmi, { type ChatUserstate } from "tmi.js";
 
 import { typeSafeObjectEntries } from "../utils/helpers";
 
-import { useFerrets } from "./useFerrets";
+import { useFerrets, usePlaygroups } from "./useFerrets";
 
 import useChannel from "./useChannel";
 
@@ -48,6 +48,7 @@ export default function useChatCommand(callback: (command: string) => void) {
   );
 
   const ferrets = useFerrets();
+  const playgroups = usePlaygroups();
   const commandsMap = useMemo(() => {
     const commands = new Map<string, string>();
     if (ferrets) {
@@ -57,9 +58,16 @@ export default function useChatCommand(callback: (command: string) => void) {
         });
       });
     }
+    if (playgroups) {
+      typeSafeObjectEntries(playgroups).forEach(([key, playgroup]) => {
+        playgroup.commands.forEach((command) => {
+          commands.set(command.toLowerCase(), key);
+        });
+      });
+    }
     commands.set("welcome", "welcome");
     return commands;
-  }, [ferrets]);
+  }, [ferrets, playgroups]);
 
   const messageHandler = useCallback(
     (

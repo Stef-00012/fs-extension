@@ -119,16 +119,15 @@ export const FerretsProvider = ({
   // On mount, attempt to fetch the ferrets from the API
   // If we can't fetch the ferrets, use the data from the data package
   useEffect(() => {
-    setData(fallbackData); //TEMP
-    // fetchMeta()
-    //   .then((meta) => setLastUpdated(meta.lastUpdated))
-    //   .catch((err) => console.error("Failed to fetch ferrets metadata", err));
-    // fetchFerretsApi() // catch is before then so that if fetch failes, promise chain continues to use fallback data
-    //   .catch((err) => {
-    //     console.error(err);
-    //     return fallbackData;
-    //   })
-    //   .then(setData);
+    fetchMeta()
+      .then((meta) => setLastUpdated(meta.lastUpdated))
+      .catch((err) => console.error("Failed to fetch ferrets metadata", err));
+    fetchFerretsApi() // catch is before then so that if fetch failes, promise chain continues to use fallback data
+      .catch((err) => {
+        console.error(err);
+        return fallbackData;
+      })
+      .then(setData);
   }, []);
 
   // Every 2 hours, attempt to fetch the ferrets from the API

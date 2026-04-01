@@ -2,19 +2,11 @@
 
 Twitch extension for [Ferret Software](https://ferrets.live), allowing stream viewers to learn more about the ferrets at the sanctuary. Derived from the [Alveus Sanctuary Twitch Extension](https://github.com/alveusgg/extension).
 
-## Demo
+This project is split across 3 repos:
 
-### Overlay
-
-https://user-images.githubusercontent.com/49528805/229294979-1cf91fc2-420a-43ec-95c4-78c06d4ec99d.mp4
-
-### Panel
-
-https://user-images.githubusercontent.com/49528805/229295136-675313d2-54e4-4758-a42c-76961c4d2e66.mp4
-
-### Mobile
-
-https://user-images.githubusercontent.com/49528805/229295376-6490d0a5-5f01-456b-8509-6e551ce82f1c.mp4
+- [Extension frontend (this repo)](https://github.com/pirate-software/fs-extension): The frontend code for the Twitch extension
+- [Extension backend](https://github.com/pirate-software/fs-dts): The backend API for the extension
+- [Data package](https://github.com/pirate-software/fs-data): The npm package containing definitions for the API
 
 ## Local Set Up
 
@@ -79,9 +71,11 @@ The panel is available at [localhost:8080/panel.html](https://localhost:8080/pan
 
 ## Chatbot Commands
 
-`![ferret]`: displays the card of the corresponding ferret
+`!show [ferret/playgroup]`: displays the card of the corresponding ferret/playgroup
 
-- Note: `[ferret]` is the full name of any ferret, spaces omitted (Ex: !bigmike = Big Mike, !pepper2 = Pepper 2)
+- Note: `[ferret/playgroup]` is the full name of any ferret, spaces omitted (Ex: !bigmike = Big Mike, !pepper2 = Pepper 2)
+
+- Note: Playgroups not available in panel/mobile views
 
 `!welcome`: displays the introduction section
 
