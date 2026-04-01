@@ -81,7 +81,7 @@ The panel is available at [localhost:8080/panel.html](https://localhost:8080/pan
 
 ## Contribute
 
-See [CONTRIBUTING.md](https://github.com/pirate-software/fs-extension?tab=contributing-ov-file)
+See [CONTRIBUTING.md](https://github.com/pirate-software/fs-extension/blob/main/CONTRIBUTING.md)
 
 ## User Data
 
